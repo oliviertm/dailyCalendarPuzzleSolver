@@ -354,8 +354,8 @@ def CreatePiecesBack():
     BigL = Piece(shape=[Coordinate(0,1),Coordinate(1,0),Coordinate(1,0),Coordinate(1,0)],name="L",relevantTrans=[Trans.UpBack,Trans.RightBack,Trans.DownBack,Trans.LeftBack])# big L
     U = Piece(shape=[Coordinate(0,1),Coordinate(1,0),Coordinate(1,0),Coordinate(0,-1)],name="U",relevantTrans=[Trans.UpBack,Trans.RightBack,Trans.DownBack,Trans.LeftBack])# U shaped 5 squares
     Lequal = Piece(shape=[Coordinate(0,1),Coordinate(0,1),Coordinate(1,0),Coordinate(1,0)],name="LL",relevantTrans=[Trans.UpBack,Trans.RightBack,Trans.DownBack,Trans.LeftBack])# L with equal lengh arms
-    return [FourFlat,SmallS,SmallL,T,Q,BigS,SmallsTail,BigL,U,Lequal]
-   
+    return [FourFlat,U,Q, BigL,SmallL,SmallsTail,SmallS,Lequal,BigS,T]#list by freqency in first pos in sol
+
 def testSolve3():
     A = Piece(shape=[Coordinate(0,1),Coordinate(0,1),Coordinate(1,0)],name="A")
     B = Piece(shape=[Coordinate(0,1),Coordinate(0,1),Coordinate(1,0)],name="B")
