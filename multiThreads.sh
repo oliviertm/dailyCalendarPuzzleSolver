@@ -28,7 +28,7 @@ if [ $# -eq 1 ]; then
             else
                 START=false
             fi
-            ./CalendarPuzzleSolver.bin $WDAY $DAY $1 inline >> $FILENAME
+            ./CalendarPuzzleSolver.bin $WDAY $DAY $1 i >> $FILENAME
         done
     done
     echo '}' >> $FILENAME
