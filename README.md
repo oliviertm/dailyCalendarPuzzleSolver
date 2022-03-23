@@ -22,4 +22,4 @@ C++ implementation takes the date in command line with 3 numbers :
 
 C++ implementation can also print all solutions of one date in a single line formatted to be readable with python json library (option 'i'), or turn upside down some pieces when looking for solutions (add the list of pieces numbers from 1 to 10 as arguments).
 
-This repository also contains Linux and Windows makefiles for the C++, and a bash script able to run 12 threads to look for all the solutions for 7x12x31 dates on a multicore system.
+This repository also contains Linux and Windows makefiles for the C++, and a bash script able to run 12 threads to look for all the solutions for 7x12x31 dates on a multicore system by using the C++ implementation and make it print the solutions in 12 files (one for each month).
