@@ -508,92 +508,13 @@ void printMonth(int monthNum)
     }
 }
 
+void printHelp(string arg="")
+{
+    cout << "Invalid argument : "<< arg <<"\nValid arguments are: \nweekday day month [i] [s] [1-10]\nex :\n5 23 1\nfor Friday 23rd January\n'i' is optionnal and make the results appear once all of them has been found in a single line of python syntax\n's' is optionnal and make the pieces be used with their smooth side up as reference side, instead their frosted side\n'1' to '10' numbers may be added to specify the pieces which can be turn upside down during solutions searching." << endl;
+}
+
 int main(int argc, char* argv[])
 {
-    /*
-    cout << "Argc: " << argc << endl;
-    for(int i=0;i<argc;i++){
-        cout << "Arg " << i  << " : " << argv[i] << endl;
-    }
-    */
-    /*
-    Vect myPshape[3]= {Vect(0,1),Vect(-1,-1),Vect(-1,0)};
-    int myShapeLen = 3;
-    int myShapeVal = 3;
-    Trans myShapeRelTrans[] = {Trans::up};
-    int myShapeRelTLen = 1;
-    Piece myPiece = Piece(myPshape,myShapeLen,myShapeVal,myShapeRelTrans,myShapeRelTLen);
-    Piece secPiece = myPiece;
-    cout << "myPiece: " << myPiece << endl;
-    Board myBoard(5,23,1);
-    cout << "myBoard:"<< endl << myBoard << endl;
-    int pos[2];
-    myBoard.nextAvailablePos(pos);
-    cout << "nextAvailablePos: x=" << to_string(pos[1]) << " y=" << to_string(pos[0]) <<endl;
-    int myPos[2] = {3,0};
-    Board * newBoard;
-    newBoard = myBoard.putPiece(myPiece,myPos);
-    cout << "newboard: " << newBoard << endl;
-    if (newBoard) cout << "board with piece:" << endl << *newBoard << endl;
-    */
-    /*
-    Vect shapeA[3]= {Vect(1,0),Vect(0,1)};
-    Trans shapeArelTrans[] = {Trans::up,Trans::right};
-    Piece pieceA = Piece(shapeA,2,1,shapeArelTrans,2);
-    Vect shapeB[3]= {Vect(0,1),Vect(1,0)};
-    Trans shapeBrelTrans[] = {Trans::up};
-    Piece pieceB = Piece(shapeB,2,2,shapeBrelTrans,1);
-    Vect shapeC[3]= {Vect(0,1)};
-    Trans shapeCrelTrans[] = {Trans::up};
-    Piece pieceC = Piece(shapeC,1,3,shapeCrelTrans,1);
-    Board board(6,31,12);
-    bool keep;
-    Board * sols = NULL;
-    Board * nextSol;
-    Piece * pList[3] = {&pieceA,&pieceB,&pieceC};
-    keep = Solve(board, pList, 3, &sols);
-    cout << "Last solution pointer: " << sols << endl;
-    if(sols){
-        cout << "Solutions:" << endl;
-        cout << *sols << endl;
-        nextSol = sols->next;
-        while(nextSol){
-            cout << *nextSol << endl << endl;
-            nextSol = nextSol->next;
-        }
-    }
-    */
-    /*
-    Board testB;
-    //Board test3(1,2,3);
-    //cout << "Test board: " << endl <<  testB << endl;
-    Trans allTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
-    Trans twoTrans[4] = {Trans::up,Trans::right};
-    Vect Aarray[3]= {Vect(0,1),Vect(0,1),Vect(1,0)};
-    Piece A(Aarray, 3, 1, allTrans, 4);
-    Vect Barray[3]= {Vect(1,0),Vect(0,1)};
-    Piece B(Barray, 2, 2, allTrans, 4);
-    Vect Carray[3]= {Vect(0,1)};
-    Piece C(Carray, 1, 3, twoTrans, 2);
-    bool keep;
-    int nbTries=0;
-    Board * sols = NULL;
-    Board * nextSol;
-    Piece * tPieces[3] = {&A,&B,&C};
-    keep = Solve(testB, tPieces, 3, &sols,&nbTries);
-     if(sols){
-        cout << "Solutions:" << endl;
-        cout << *sols << endl;
-        nextSol = sols->next;
-        while(nextSol){
-                cout << *nextSol << endl << endl;
-                nextSol = nextSol->next;
-            }
-        } else {
-            cout << "No solutions found after " << nbTries << " tries" << endl;
-        }
-        */
- 
     time_t startTime, endTime;
     time_t elapsed; 
     time(&startTime);
@@ -611,6 +532,10 @@ int main(int argc, char* argv[])
     int qTransLen=4;
     int lEqualTransLen=4;
     bool inLine = false;
+    bool fSide=true;
+    Trans allTrans[8] = {Trans::up,Trans::right,Trans::down,Trans::left,Trans::upBack,Trans::rightBack,Trans::downBack,Trans::leftBack};
+            Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
+            Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
     if(argc>=4){
         wdayNum = stoi(argv[1]);
         dayNum = stoi(argv[2]);
@@ -621,40 +546,65 @@ int main(int argc, char* argv[])
                 if(arg.compare("i")==0) {
                     inLine=true;
                 } else {
-                    int p = stoi(arg);
-                    switch(p){
-                        case 2:
-                            smallSTransLen=4;
-                            break;
-                        case 3:
-                            smallLTransLen=8;
-                            break;
-                        case 6:
-                            bigSTransLen=4;
-                            break;
-                        case 7:
-                            smallStailTransLen=8;
-                            break;
-                        case 8:
-                            bigLTransLen=8;
-                            break;
-                        case 5:
-                            qTransLen=8;
-                            break;
-                        case 10:
-                            lEqualTransLen=4;
-                            break;
-                        default:
-                            break;//other pieces are the same once returned
+                    if(arg.compare("s")==0){
+                        fSide=false;
+                    } else {
+                        int p;
+                        try {
+                            p = stoi(arg);
+                        } catch ( std::invalid_argument& e){
+                            printHelp(arg);
+                            return 1;
+                        }
+                        switch(p){
+                            case 2:
+                                smallSTransLen=4;
+                                break;
+                            case 3:
+                                smallLTransLen=8;
+                                break;
+                            case 6:
+                                bigSTransLen=4;
+                                break;
+                            case 7:
+                                smallStailTransLen=8;
+                                break;
+                            case 8:
+                                bigLTransLen=8;
+                                break;
+                            case 5:
+                                qTransLen=8;
+                                break;
+                            case 10:
+                                lEqualTransLen=4;
+                                break;
+                            default:
+                                break;//other pieces are the same once returned
+                        }
                     }
                 }
             }
             
         }
         // Create the 10 pieces
-        Trans allTrans[8] = {Trans::up,Trans::right,Trans::down,Trans::left,Trans::upBack,Trans::rightBack,Trans::downBack,Trans::leftBack};
-        Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
-        Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
+        if(fSide==false){
+            allTrans[0] = Trans::upBack;
+            allTrans[1] = Trans::rightBack;
+            allTrans[2] = Trans::downBack;
+            allTrans[3] = Trans::leftBack;
+            allTrans[4] = Trans::up;
+            allTrans[5] = Trans::right;
+            allTrans[6] = Trans::down;
+            allTrans[7] = Trans::left;
+            allFaceTrans[0] = Trans::upBack;
+            allFaceTrans[1] = Trans::rightBack;
+            allFaceTrans[2] = Trans::downBack;
+            allFaceTrans[3] = Trans::leftBack;
+            upRightTrans[0] = Trans::upBack;
+            upRightTrans[1] = Trans::rightBack;
+            upRightTrans[2] = Trans::up;
+            upRightTrans[3] = Trans::right;
+        }
         
         Vect FourFlatArray[3]= {Vect(0,1),Vect(0,1),Vect(0,1)};
         Piece FourFlat(FourFlatArray, 3, 1, upRightTrans, fourFlatTransLen);
@@ -727,13 +677,12 @@ int main(int argc, char* argv[])
             cout  << "], \"nbSol\": " << nbSols << "}";
         }
     } else {
-        cout << "Missing arguments :\nweekday day month [i] [1-10]\nex :\n5 23 1\nfor Friday 23rd January\n'i' is optionnal and make the results appear once all of them has been found in a single line of python syntax\n'1' to '10' numbers may be added to specify the pieces which can be turn upside down during solutions searching." << endl;
+        printHelp();
+        return 2;
     }
     if(inLine==false){
         time(&endTime);
         elapsed = endTime - startTime;
         cout << "End of program reached,  execution duration: " << elapsed << " seconds" << endl;
     }
-    
-    //cout << "End of program" << endl;
 }
