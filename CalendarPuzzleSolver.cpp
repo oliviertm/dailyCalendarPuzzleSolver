@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <stdexcept>
 
 using namespace std;
 
