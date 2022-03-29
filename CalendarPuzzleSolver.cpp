@@ -172,7 +172,6 @@ protected:
     bool putPieceSquare(Board &board, int value, Coord pos);
     
 public:
-    Board(void); // test
 	Board(int weekday, int monthDay, int month);
 	Board(const Board& other){AssignFrom(other);}
 	virtual ~Board(){}
@@ -190,25 +189,6 @@ public:
 
 	friend ostream& operator<<(ostream& o, const Board& p){return p.put(o);}
 };
-
-Board::Board(void)///test
-{
-    int x,y;
-    next = NULL;
-    arrayOrigin.x= 3;
-    arrayOrigin.y = 3;
-    //cout << "bxl " << BXL << " byl " << BYL << " bdyl " << BDYL << " bdxl " << BDXL << " arrayOrigin.x " << arrayOrigin.x << " arrayOrigin.y " << arrayOrigin.y << endl;
-    for(x=0;x<BXL;x++){
-        for(y=0;y<BYL;y++){
-            boardArray[y][x] = -1;
-        }
-    }
-    for(x=arrayOrigin.x;x<(arrayOrigin.x+BDXL);x++){
-        for(y=arrayOrigin.y;y<(arrayOrigin.y+BDYL);y++){
-            boardArray[y][x] = 0;
-        }
-    }
-}
 
 Board::Board(int weekday, int monthDay, int month)
 {
@@ -270,9 +250,6 @@ void Board::nextAvailablePos(Coord * pos)
         }
         y++;
     }
-    /*if(found==false){
-        cout << "ERROR next pos, board:" << endl << *this << endl <<  "arrayOrigin " << arrayOrigin << " x " << x << " y " << y << " bdxl " << BDXL << " bdyl " << BDYL << " array " << boardArray[y-1][x-1] <<  " =0 " <<  (boardArray[y-1][x-1]==0) << endl;
-    }*/
 }
 
 bool Board::putPieceSquare(Board &board, int value, Coord pos)
@@ -513,6 +490,7 @@ void printHelp(string arg="")
     cout << "Invalid argument : "<< arg <<"\nValid arguments are: \nweekday day month [i] [s] [1-10]\nex :\n5 23 1\nfor Friday 23rd January\n'i' is optionnal and make the results appear once all of them has been found in a single line of python syntax\n's' is optionnal and make the pieces be used with their smooth side up as reference side, instead their frosted side\n'1' to '10' numbers may be added to specify the pieces which can be turn upside down during solutions searching." << endl;
 }
 
+
 int main(int argc, char* argv[])
 {
     time_t startTime, endTime;
@@ -642,12 +620,9 @@ int main(int argc, char* argv[])
 
         if(inLine==false){
             if(sols){
-                //cout << "Solutions:" << endl;
-                //cout << *sols << endl;
                 nbSols ++;
                 nextSol = sols->next;
                 while(nextSol){
-                    //cout << *nextSol << endl << endl;
                     nbSols++;
                     nextSol = nextSol->next;
                 }
@@ -685,4 +660,6 @@ int main(int argc, char* argv[])
         elapsed = endTime - startTime;
         cout << "End of program reached,  execution duration: " << elapsed << " seconds" << endl;
     }
+    
+    return 0;
 }
