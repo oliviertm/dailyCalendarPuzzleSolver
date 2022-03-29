@@ -45,7 +45,7 @@ class Vect{
 class Piece{
 
 protected:
-	Vect * baseShape;
+    Vect * baseShape;
     Vect * currShape;
     
 public:
@@ -55,16 +55,16 @@ public:
     Trans* relevantTrans;
     int nbRelevantTrans;
 
-	Piece(Vect shape[], int shapeLen, int val, Trans relTrans[], int nbRelTrans);
-	virtual ~Piece();
+    Piece(Vect shape[], int shapeLen, int val, Trans relTrans[], int nbRelTrans);
+    virtual ~Piece();
     
     void transform(Trans transformation);
     
     Vect operator[](int index);
 
-	virtual ostream& put(ostream & o,char sep=' ') const ;
+    virtual ostream& put(ostream & o,char sep=' ') const ;
 
-	friend ostream& operator<<(ostream& o, const Piece& p){return p.put(o);}
+    friend ostream& operator<<(ostream& o, const Piece& p){return p.put(o);}
 };
 
 Piece::Piece(Vect shape[], int shapeLen, int val, Trans relTrans[], int nbRelTrans)
@@ -166,19 +166,19 @@ ostream & Piece::put(ostream & o,char sep) const
 class Board{
 
 protected:
-	int boardArray[BYL][BXL];
+    int boardArray[BYL][BXL];
     Coord arrayOrigin;
 
     void AssignFrom(const Board& other);
     bool putPieceSquare(Board &board, int value, Coord pos);
     
 public:
-	Board(int weekday, int monthDay, int month);
-	Board(const Board& other){AssignFrom(other);}
-	virtual ~Board(){}
+    Board(int weekday, int monthDay, int month);
+    Board(const Board& other){AssignFrom(other);}
+    virtual ~Board(){}
     Board& operator=(const Board& other){AssignFrom(other);return *this;}
     
-   Board * next; 
+    Board * next; 
     
     void nextAvailablePos(Coord * pos);
     
@@ -186,9 +186,9 @@ public:
 
     void print();
 
-	virtual ostream& put(ostream & o,char sep=' ') const ;
+    virtual ostream& put(ostream & o,char sep=' ') const ;
 
-	friend ostream& operator<<(ostream& o, const Board& p){return p.put(o);}
+    friend ostream& operator<<(ostream& o, const Board& p){return p.put(o);}
 };
 
 Board::Board(int weekday, int monthDay, int month)
@@ -355,23 +355,17 @@ bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbT
     Piece ** newPieces;
     int i,j;
     int newNbPieces =  nbPieces - 1;
-    //cout << "Solved called for " << nbPieces << " pieces" << endl;
     if(nbPieces != 0){
         board.nextAvailablePos(&pos);
-       //cout << "nbPieces " << nbPieces << " next avail pos " << pos << endl;
         for(int pIdx=0;pIdx<nbPieces;pIdx++){
-            //if(nbPieces==10) cout << "try piece " << *pieces[pIdx] << endl;
             for(int origin=0;origin<=pieces[pIdx]->shapeLength;origin++){
                 trans=pieces[pIdx]->relevantTrans;
                 for(int tIdx=0;tIdx<pieces[pIdx]->nbRelevantTrans;tIdx++){
                     pieces[pIdx]->origin=origin;
                     pieces[pIdx]->transform(*trans);
                     newBoard = board.putPiece(*pieces[pIdx],pos);
-                    (*nbTries)++;
-                   // cout << "PutPiece called for piece " << *pieces[pIdx] << " for pos " << pos << " and origin " << origin << " and trans " << *trans << " and returned: " << newBoard << endl;
-                  /*  if(newBoard) cout << *newBoard  << endl;
-                    else cout << "NULL" << endl;*/
                     if(newBoard){
+                        (*nbTries)++;
                         if(newNbPieces>0){
                             newPieces  = new Piece*[newNbPieces];
                             j=0;
@@ -384,13 +378,8 @@ bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbT
                         } else {
                             newPieces = NULL;
                         }
-                        /*cout << "Solve to be called for ";
-                        for(i=0;i<newNbPieces;i++) cout << *newPieces[i] << " ";
-                        cout << endl;*/
                         keepBoard = Solve(*newBoard,newPieces,newNbPieces,sols,nbTries,printSol);
-                        //cout << "Solve returned for " << (nbPieces-1) << " with keepboard " << keepBoard << endl;
                         if(keepBoard != true){
-                            //cout << "delete board " << newBoard << endl;
                             delete newBoard;
                         }
                         keepBoard = false;
@@ -513,8 +502,8 @@ int main(int argc, char* argv[])
     bool inLine = false;
     bool fSide=true;
     Trans allTrans[8] = {Trans::up,Trans::right,Trans::down,Trans::left,Trans::upBack,Trans::rightBack,Trans::downBack,Trans::leftBack};
-            Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
-            Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
+    Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
+    Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
     if(argc>=4){
         wdayNum = stoi(argv[1]);
         dayNum = stoi(argv[2]);
