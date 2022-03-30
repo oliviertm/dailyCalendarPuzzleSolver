@@ -602,7 +602,7 @@ int main(int argc, char* argv[])
         int nbSols=0;
         Board * sols = NULL;
         Board * nextSol;
-        Piece * puzzlePieces[10] = {&FourFlat,&U,&Q,&BigL,&SmallL,&SmallsTail,&SmallS,&Lequal,&BigS,&T};//in order of most frequent appearance in first case when none turn upside down
+        Piece * puzzlePieces[10] = {&FourFlat,&U,&Q,&SmallsTail,&SmallL,&BigL,&SmallS,&Lequal,&BigS,&T};//in order of most frequent appearance in first case when none turn upside down
         if(inLine==false){
             cout << "Solutions:" << endl;
         }
