@@ -1,8 +1,8 @@
 # Daily Calendar Puzzle Solver
 
-This code is designed to solve Daily Calendar Puzzle
+This code is designed to solve this Daily Calendar Puzzle:
 
-Have a look on Google for *daily calendar puzzle* and you'll see how it looks like.
+![Daily Calendar Puzzle](dailycalendarpuzzle.jpeg)
 
 It's a Tetris like puzzle you need to solve differently for each day because the pieces have to fit in a grid with one square for each of the 12 months, each of the 31 days and each of the 7 days of week. Once solved, the Tetris pieces hide every squares except one for the current month, one for the current day of the month and one for the current day of the week.
 
@@ -10,7 +10,7 @@ This code implement the same algorithm in python and C++, even if it is more fle
 
 I first started with the python version, but as it requires 76 minutes to find all the solutions for one date, I tried to speed it up by using several threads (which corresponds to the version in this repository), and finally, as I needed to speed it up a lot, I implemented it again, and optimized it in C++. As a result, the computation time for the same task dropped from 76 minutes to 25 seconds.
 
-The python code can be easily adapted to solve any Tetris like puzzle, but the C++ one is highly binded to this specific puzzle.
+The python code can be easily adapted to solve any Tetris like puzzle, but the C++ one is more binded to this specific puzzle (actually, the Board class constructor only is strongly binded to this specific puzzle).
 
 Python implementation ask for the date of the puzzle to solve in a prompt.
 
