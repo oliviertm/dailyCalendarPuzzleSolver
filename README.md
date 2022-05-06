@@ -2,7 +2,7 @@
 
 This code is designed to solve this Daily Calendar Puzzle:
 
-![Daily Calendar Puzzle](dailycalendarpuzzle.jpeg)
+![Daily Calendar Puzzle](img/poodlepuzzleDailyCalendarPuzzle.jpeg)
 
 It's a Tetris like puzzle you need to solve differently for each day because the pieces have to fit in a grid with one square for each of the 12 months, each of the 31 days and each of the 7 days of week. Once solved, the Tetris pieces hide every squares except one for the current month, one for the current day of the month and one for the current day of the week.
 
