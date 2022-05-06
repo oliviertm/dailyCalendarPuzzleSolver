@@ -51,7 +51,7 @@ class PuzzleSolver():
                                 execDuration = execDuration[:execDuration.rfind('.')]
                             stdout.write("\r{0} - {1:.2f}% - {2} sol. over {3} pcs put with {4} tested combi.".format(\
                                     execDuration,\
-                                    ((pieces.index(piece)*len(piece)*len(relTrans))+(origin*len(piece))+relTrans.index(trans))/(nbPcs*len(piece)*len(relTrans))*100,\
+                                    ((pieces.index(piece)*len(piece)*len(relTrans))+(origin*len(relTrans))+relTrans.index(trans))/(nbPcs*len(piece)*len(relTrans))*100,\
                                     len(solutions),\
                                     self._nbPcsPut,
                                     self._nbTries\
