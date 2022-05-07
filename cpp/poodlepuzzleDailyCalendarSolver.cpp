@@ -57,8 +57,7 @@ public:
     void transform(Trans transformation);
     Vect operator[](int index);
     virtual ostream& put(ostream & o,char sep=' ') const ;
-
-	friend ostream& operator<<(ostream& o, const Piece& p){return p.put(o);}
+    friend ostream& operator<<(ostream& o, const Piece& p){return p.put(o);}
 };
 
 Piece::Piece(Vect shape[], int shapeLen, int val, Trans relTrans[], int nbRelTrans)
@@ -172,7 +171,7 @@ protected:
 public:  
     Board * next; 
     
-	Board(int weekday, int monthDay, int month);
+    Board(int weekday, int monthDay, int month);
     Board(const Board& other){AssignFrom(other);}
     virtual ~Board(){}
     Board& operator=(const Board& other){AssignFrom(other);return *this;} 
