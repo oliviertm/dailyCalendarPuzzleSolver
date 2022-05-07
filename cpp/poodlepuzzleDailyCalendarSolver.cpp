@@ -192,25 +192,6 @@ public:
 	friend ostream& operator<<(ostream& o, const Board& p){return p.put(o);}
 };
 
-Board::Board(void)///test
-{
-    int x,y;
-    next = NULL;
-    arrayOrigin.x= 3;
-    arrayOrigin.y = 3;
-    //cout << "bxl " << BXL << " byl " << BYL << " bdyl " << BDYL << " bdxl " << BDXL << " arrayOrigin.x " << arrayOrigin.x << " arrayOrigin.y " << arrayOrigin.y << endl;
-    for(x=0;x<BXL;x++){
-        for(y=0;y<BYL;y++){
-            boardArray[y][x] = -1;
-        }
-    }
-    for(x=arrayOrigin.x;x<(arrayOrigin.x+BDXL);x++){
-        for(y=arrayOrigin.y;y<(arrayOrigin.y+BDYL);y++){
-            boardArray[y][x] = 0;
-        }
-    }
-}
-
 Board::Board(int weekday, int monthDay, int month)
 {
     // weekday from 1 to 7 with 1=Monday..7=Sunday
@@ -271,9 +252,6 @@ void Board::nextAvailablePos(Coord * pos)
         }
         y++;
     }
-    /*if(found==false){
-        cout << "ERROR next pos, board:" << endl << *this << endl <<  "arrayOrigin " << arrayOrigin << " x " << x << " y " << y << " bdxl " << BDXL << " bdyl " << BDYL << " array " << boardArray[y-1][x-1] <<  " =0 " <<  (boardArray[y-1][x-1]==0) << endl;
-    }*/
 }
 
 bool Board::putPieceSquare(Board &board, int value, Coord pos)
@@ -383,12 +361,9 @@ bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbT
     Piece ** newPieces;
     int i,j;
     int newNbPieces =  nbPieces - 1;
-    //cout << "Solved called for " << nbPieces << " pieces" << endl;
     if(nbPieces != 0){
         board.nextAvailablePos(&pos);
-       //cout << "nbPieces " << nbPieces << " next avail pos " << pos << endl;
         for(int pIdx=0;pIdx<nbPieces;pIdx++){
-            //if(nbPieces==10) cout << "try piece " << *pieces[pIdx] << endl;
             for(int origin=0;origin<=pieces[pIdx]->shapeLength;origin++){
                 trans=pieces[pIdx]->relevantTrans;
                 for(int tIdx=0;tIdx<pieces[pIdx]->nbRelevantTrans;tIdx++){
@@ -396,9 +371,6 @@ bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbT
                     pieces[pIdx]->transform(*trans);
                     newBoard = board.putPiece(*pieces[pIdx],pos);
                     (*nbTries)++;
-                   // cout << "PutPiece called for piece " << *pieces[pIdx] << " for pos " << pos << " and origin " << origin << " and trans " << *trans << " and returned: " << newBoard << endl;
-                  /*  if(newBoard) cout << *newBoard  << endl;
-                    else cout << "NULL" << endl;*/
                     if(newBoard){
                         (*nbPlPcs)++;
                         if(newNbPieces>0){
@@ -413,13 +385,8 @@ bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbT
                         } else {
                             newPieces = NULL;
                         }
-                        /*cout << "Solve to be called for ";
-                        for(i=0;i<newNbPieces;i++) cout << *newPieces[i] << " ";
-                        cout << endl;*/
                         keepBoard = Solve(*newBoard,newPieces,newNbPieces,sols,nbTries,nbPlPcs,printSol);
-                        //cout << "Solve returned for " << (nbPieces-1) << " with keepboard " << keepBoard << endl;
                         if(keepBoard != true){
-                            //cout << "delete board " << newBoard << endl;
                             delete newBoard;
                         }
                         keepBoard = false;
@@ -523,90 +490,6 @@ void printHelp(string arg="")
 
 int main(int argc, char* argv[])
 {
-    /*
-    cout << "Argc: " << argc << endl;
-    for(int i=0;i<argc;i++){
-        cout << "Arg " << i  << " : " << argv[i] << endl;
-    }
-    */
-    /*
-    Vect myPshape[3]= {Vect(0,1),Vect(-1,-1),Vect(-1,0)};
-    int myShapeLen = 3;
-    int myShapeVal = 3;
-    Trans myShapeRelTrans[] = {Trans::up};
-    int myShapeRelTLen = 1;
-    Piece myPiece = Piece(myPshape,myShapeLen,myShapeVal,myShapeRelTrans,myShapeRelTLen);
-    Piece secPiece = myPiece;
-    cout << "myPiece: " << myPiece << endl;
-    Board myBoard(5,23,1);
-    cout << "myBoard:"<< endl << myBoard << endl;
-    int pos[2];
-    myBoard.nextAvailablePos(pos);
-    cout << "nextAvailablePos: x=" << to_string(pos[1]) << " y=" << to_string(pos[0]) <<endl;
-    int myPos[2] = {3,0};
-    Board * newBoard;
-    newBoard = myBoard.putPiece(myPiece,myPos);
-    cout << "newboard: " << newBoard << endl;
-    if (newBoard) cout << "board with piece:" << endl << *newBoard << endl;
-    */
-    /*
-    Vect shapeA[3]= {Vect(1,0),Vect(0,1)};
-    Trans shapeArelTrans[] = {Trans::up,Trans::right};
-    Piece pieceA = Piece(shapeA,2,1,shapeArelTrans,2);
-    Vect shapeB[3]= {Vect(0,1),Vect(1,0)};
-    Trans shapeBrelTrans[] = {Trans::up};
-    Piece pieceB = Piece(shapeB,2,2,shapeBrelTrans,1);
-    Vect shapeC[3]= {Vect(0,1)};
-    Trans shapeCrelTrans[] = {Trans::up};
-    Piece pieceC = Piece(shapeC,1,3,shapeCrelTrans,1);
-    Board board(6,31,12);
-    bool keep;
-    Board * sols = NULL;
-    Board * nextSol;
-    Piece * pList[3] = {&pieceA,&pieceB,&pieceC};
-    keep = Solve(board, pList, 3, &sols);
-    cout << "Last solution pointer: " << sols << endl;
-    if(sols){
-        cout << "Solutions:" << endl;
-        cout << *sols << endl;
-        nextSol = sols->next;
-        while(nextSol){
-            cout << *nextSol << endl << endl;
-            nextSol = nextSol->next;
-        }
-    }
-    */
-    /*
-    Board testB;
-    //Board test3(1,2,3);
-    //cout << "Test board: " << endl <<  testB << endl;
-    Trans allTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
-    Trans twoTrans[4] = {Trans::up,Trans::right};
-    Vect Aarray[3]= {Vect(0,1),Vect(0,1),Vect(1,0)};
-    Piece A(Aarray, 3, 1, allTrans, 4);
-    Vect Barray[3]= {Vect(1,0),Vect(0,1)};
-    Piece B(Barray, 2, 2, allTrans, 4);
-    Vect Carray[3]= {Vect(0,1)};
-    Piece C(Carray, 1, 3, twoTrans, 2);
-    bool keep;
-    int nbTries=0;
-    Board * sols = NULL;
-    Board * nextSol;
-    Piece * tPieces[3] = {&A,&B,&C};
-    keep = Solve(testB, tPieces, 3, &sols,&nbTries);
-     if(sols){
-        cout << "Solutions:" << endl;
-        cout << *sols << endl;
-        nextSol = sols->next;
-        while(nextSol){
-                cout << *nextSol << endl << endl;
-                nextSol = nextSol->next;
-            }
-        } else {
-            cout << "No solutions found after " << nbTries << " tries" << endl;
-        }
-        */
- 
     time_t startTime, endTime;
     time_t elapsed; 
     time(&startTime);
@@ -732,12 +615,9 @@ int main(int argc, char* argv[])
 
         if(inLine==false){
             if(sols){
-                //cout << "Solutions:" << endl;
-                //cout << *sols << endl;
                 nbSols ++;
                 nextSol = sols->next;
                 while(nextSol){
-                    //cout << *nextSol << endl << endl;
                     nbSols++;
                     nextSol = nextSol->next;
                 }
@@ -775,7 +655,5 @@ int main(int argc, char* argv[])
         elapsed = endTime - startTime;
         cout << "End of program reached,  execution duration: " << elapsed << " seconds" << endl;
     }
-    
-    //cout << "End of program" << endl;
     return 0;
 }
