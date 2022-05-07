@@ -58,7 +58,7 @@ Here is an example of the python code execution (configured to stop looking for 
 
 And here is an example of the C++ implementation use for the same date (which always look for all solutions before ending execution):
 
-    $./CamendarPuzzleSolver.bin 1 27 3
+    $./poodlepuzzleDailyCalendarSolver.bin 1 27 3
     Solutions:
       7  7 -1  4  4  4 -1
       1  7  7  7  4  2 -1
@@ -91,3 +91,11 @@ The Jarring Words puzzle corresponding to this solver is this one:
 ![Jarring Words Calendar Puzzle](img/jarringWordsCalendarPuzzle.jpeg)
 
 This puzzle is very similar to Dragon Fjord one, only the "T" shaped piece differs from it (Dragon Fjord version have a big S piece instead the T one)
+
+## HEMA square Puzzle
+
+It is a simple square board in which tetris like pieces shall fit.
+
+The version created to implement this solver is this one:
+
+![HEMA puzzle](img/hemapuzzle.jpeg)
