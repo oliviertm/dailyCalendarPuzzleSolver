@@ -166,8 +166,8 @@ class Board():
     """
     This class represent the board of the puzzle
     A board is initialized by a two dimensions array (a list of lists)
-    This array shall contains "None" on any available square, and something
-    else on squares where no pieces can be put
+    This array shall contains "None" on any available square, and 0
+    on squares where no pieces can be put
     As the puzzle solver will try to put pieces on boad borders, the array
     provided to build this board shall have enough unavailable square all 
     around to prevent the solver from trying to put a piece square outside
@@ -175,7 +175,7 @@ class Board():
     filled cells of the board array depend on the length of the bigger
     piece of the piece list.
     Any shape of board is possible, providing that the "None" cells
-    are surrounded by enough not availables cells (0 filled for example)
+    are surrounded by enough not availables cells (0 filled)
     to create a 2 dimensions array.
     The system of corrdinates of the puzzle is the following:
     board parameter of the contructor is a list of list such as it is a list
