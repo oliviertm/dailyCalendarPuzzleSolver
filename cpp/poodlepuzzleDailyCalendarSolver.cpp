@@ -7,7 +7,9 @@ using namespace std;
 
 enum Trans { up, right, down, left, upBack, leftBack, downBack, rightBack};
 
-class Coord{
+// Puzzle board coordinates
+class Coord
+{
     public:
         int x;
         int y;
@@ -24,28 +26,23 @@ class Coord{
 	friend ostream& operator<<(ostream& o, const Coord& p){return p.put(o);}
 };
 
-class Vect{
+// Vector used for puzzle piece definition
+class Vect: public Coord
+{
     public:
-        int x;
-        int y;
         
-        Vect(int vx,int vy){x=vx;y=vy;}
-        Vect(){x=0;y=0;}
-        virtual ~Vect(){}
-        void AssignFrom(const Vect& other){x=other.x;y=other.y;}
-        Vect(const Vect& other){AssignFrom(other);}
-        Vect& operator=(const Vect& other){AssignFrom(other);return *this;}
+        Vect(int vx,int vy):Coord(vx,vy){}
+        Vect():Coord(){}
         
         inline bool isNull(){if(x==0&&y==0) return true; else return false;}
-        virtual ostream& put(ostream & o,char sep=' ') const {return o<< "(x=" << x << "y=" << y  << ")" << sep;}
-
-	friend ostream& operator<<(ostream& o, const Vect& p){return p.put(o);}
 };
 
-class Piece{
+// Puzzle piece
+class Piece
+{
 
 protected:
-	Vect * baseShape;
+    Vect * baseShape;
     Vect * currShape;
     
 public:
@@ -55,14 +52,11 @@ public:
     Trans* relevantTrans;
     int nbRelevantTrans;
 
-	Piece(Vect shape[], int shapeLen, int val, Trans relTrans[], int nbRelTrans);
-	virtual ~Piece();
-    
+    Piece(Vect shape[], int shapeLen, int val, Trans relTrans[], int nbRelTrans);
+    virtual ~Piece();
     void transform(Trans transformation);
-    
     Vect operator[](int index);
-
-	virtual ostream& put(ostream & o,char sep=' ') const ;
+    virtual ostream& put(ostream & o,char sep=' ') const ;
 
 	friend ostream& operator<<(ostream& o, const Piece& p){return p.put(o);}
 };
@@ -158,38 +152,35 @@ ostream & Piece::put(ostream & o,char sep) const
     return o<<"(Piece "<< to_string(value) << ")" <<sep;
 }
 
+// Puzzle board sizes definition, to be customize for other types of puzzle board
 #define BXL 13 // X len of the puzzle board
 #define BYL 14 // Y len of the puzzle board
 #define BDXL 7 // X span from board origin to display
 #define BDYL 8 // Y span from board origin to display
 
-class Board{
+// Puzzle board, only the constructor needs to be customized to change the type of puzzle board
+class Board
+{
 
 protected:
-	int boardArray[BYL][BXL];
+    int boardArray[BYL][BXL];
     Coord arrayOrigin;
 
     void AssignFrom(const Board& other);
     bool putPieceSquare(Board &board, int value, Coord pos);
     
-public:
-    Board(void); // test
+public:  
+    Board * next; 
+    
 	Board(int weekday, int monthDay, int month);
-	Board(const Board& other){AssignFrom(other);}
-	virtual ~Board(){}
-    Board& operator=(const Board& other){AssignFrom(other);return *this;}
-    
-   Board * next; 
-    
+    Board(const Board& other){AssignFrom(other);}
+    virtual ~Board(){}
+    Board& operator=(const Board& other){AssignFrom(other);return *this;} 
     void nextAvailablePos(Coord * pos);
-    
     Board * putPiece(Piece &piece, Coord pos);
-
     void print();
-
-	virtual ostream& put(ostream & o,char sep=' ') const ;
-
-	friend ostream& operator<<(ostream& o, const Board& p){return p.put(o);}
+    virtual ostream& put(ostream & o,char sep=' ') const ;
+    friend ostream& operator<<(ostream& o, const Board& p){return p.put(o);}
 };
 
 Board::Board(int weekday, int monthDay, int month)
@@ -509,24 +500,24 @@ int main(int argc, char* argv[])
     bool inLine = false;
     bool fSide=true;
     Trans allTrans[8] = {Trans::up,Trans::right,Trans::down,Trans::left,Trans::upBack,Trans::rightBack,Trans::downBack,Trans::leftBack};
-            Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
-            Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
+    Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
+    Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
     if(argc>=4){
-        wdayNum = stoi(argv[1]);
-        dayNum = stoi(argv[2]);
-        monthNum = stoi(argv[3]);
+        wdayNum = stoi(argv[1]);// week day number, monday=1, tuesday=2...
+        dayNum = stoi(argv[2]);//day number from 1 to 31
+        monthNum = stoi(argv[3]);// month number, january=1, february=2...
         if(argc>4) {
             for(int i=4; i<argc;i++){
                 string arg(argv[i]);
                 if(arg.compare("i")==0) {
-                    inLine=true;
+                    inLine=true;//inline python processable printing of the results
                 } else {
                     if(arg.compare("s")==0){
-                        fSide=false;
+                        fSide=false;//front side not used, back side of pieces are the base side to use
                     } else {
                         int p;
                         try {
-                            p = stoi(arg);
+                            p = stoi(arg);// convert argument to a number to identify the piece to use on both sides
                         } catch ( std::invalid_argument& e){
                             printHelp(arg);
                             return 1;
@@ -551,15 +542,15 @@ int main(int argc, char* argv[])
                                 qTransLen=8;
                                 break;
                             default:
-                                break;//other pieces are the same once returned
+                                break;//other pieces are the same once returned, so they are not returned to avoid creating identical solutions
                         }
                     }
                 }
             }
             
         }
-        // Create the 10 pieces
         if(fSide==false){
+            // update relevant transformations lists to put back side first to use it as base side
             allTrans[0] = Trans::upBack;
             allTrans[1] = Trans::rightBack;
             allTrans[2] = Trans::downBack;
@@ -577,7 +568,7 @@ int main(int argc, char* argv[])
             upRightTrans[2] = Trans::up;
             upRightTrans[3] = Trans::right;
         }
-        
+          // Create the 10 pieces      
         Vect FourFlatArray[3]= {Vect(0,1),Vect(0,1),Vect(0,1)};
         Piece FourFlat(FourFlatArray, 3, 1, upRightTrans, fourFlatTransLen);
         Vect SmallSArray[3]=  {Vect(0,1),Vect(1,0),Vect(0,1)};;
@@ -607,13 +598,16 @@ int main(int argc, char* argv[])
         int nbPlPcs=0;
         Board * sols = NULL;
         Board * nextSol;
-        Piece * puzzlePieces[10] = {&FourFlat,&U,&Q,&SmallsTail,&SmallL,&BigL,&SmallS,&Lequal,&BigS,&T};//in order of most frequent appearance in first case when none turn upside down
+        // Create the list of pieces to give to the solver
+        Piece * puzzlePieces[10] = {&FourFlat,&U,&Q,&SmallsTail,&SmallL,&BigL,&SmallS,&Lequal,&BigS,&T};//this order is from the most to least frequent appearance in first case, when pieces are used on their front side, fSide=true
         if(inLine==false){
             cout << "Solutions:" << endl;
         }
+        // Call the solving function
         Solve(puzzle, puzzlePieces, 10, &sols,&nbTries,&nbPlPcs,(inLine==false));
 
         if(inLine==false){
+            // Print the solution as human readable
             if(sols){
                 nbSols ++;
                 nextSol = sols->next;
@@ -628,6 +622,7 @@ int main(int argc, char* argv[])
             printMonth(monthNum);
             cout << endl;
         } else {
+            // print the solution as python dict entry
             cout << "\"";
             printWeekday(wdayNum);
             cout << " " << dayNum;
