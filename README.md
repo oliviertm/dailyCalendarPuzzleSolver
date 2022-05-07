@@ -7,7 +7,7 @@ Four examples of puzzle solvers are provided with the python implementation, all
 These four examples of puzzles are :
 - Poodle Puzzle Daily Calendar Puzzle
 - Dragon Fjord Puzzle-A-Day
-- Jarring Word Calendar Puzzle
+- Jarring Words Calendar Puzzle
 - HEMA square puzzle
 
 Moreover, and because python implementation is 182 times slower than the C++ implementation, the python solver.py also have a multithreaded version : multithreadsolver.py
@@ -73,3 +73,21 @@ And here is an example of the C++ implementation use for the same date (which al
     End of program reached,  execution duration: 9 seconds
 
 Well note that the date used for this example only have one solution (which can only be seen with the C++ implementation).
+
+## Dragon Fjord Puzzle-A-Day Solver
+
+This solver is a python one based on the common puzzle.py and solver.py/multithreadsolver.py used for the other puzzles solvers.
+
+The Dragon Fjord puzzle corresponding to this solver is this one:
+
+![Puzzle-A-Day](img/dragonFjordCalendarPuzzle.png)
+
+## Jarring Words Calendar Puzzle Solver
+
+This solver is a python one also based on the common puzzle.py and solver.py/multithreadsolver.py used for the other puzzles solvers.
+
+The Jarring Words puzzle corresponding to this solver is this one:
+
+![Jarring Words Calendar Puzzle](img/jarringWordsCalendarPuzzle.jpeg)
+
+This puzzle is very similar to Dragon Fjord one, only the "T" shaped piece differs from it (Dragon Fjord version have a big S piece instead the T one)
