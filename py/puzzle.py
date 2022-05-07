@@ -1,6 +1,5 @@
 from enum import Enum
 from copy import deepcopy
-from datetime import datetime
 
 class Coordinate():
     """
@@ -187,8 +186,13 @@ class Board():
     Due to the, the internal _board of this class is used with Y coordinates first
     """
     def __init__(self,board):
-        self._board = board
-        self._origin = self._getOrigin()
+        if isinstance(board,Board):
+            #Copy constructor
+            self._board = deepcopy(board._board)
+            self._origin = board._origin
+        else:
+            self._board = board
+            self._origin = self._getOrigin()
 
     def _getOrigin(self):
         xMin= len(self._board[0])
@@ -231,27 +235,26 @@ class Board():
             ret += "".join([repr(i).ljust(padding) for i in line]) + "\n"
         return "(\n{})".format(ret)
         
-    def _putPieceSquare(self,board,name,pos):
-        if board[self._origin.y+pos.y][self._origin.x+pos.x] is None:
-            board[self._origin.y+pos.y][self._origin.x+pos.x] = name
-            return board
+    def _putPieceSquare(self,name,pos):
+        if self._board[self._origin.y+pos.y][self._origin.x+pos.x] is None:
+            self._board[self._origin.y+pos.y][self._origin.x+pos.x] = name
+            return self
         else:
             return None
         
     def putPiece(self,piece,pos):
-        newBoard = deepcopy(self._board)
-        nextBoard = self._putPieceSquare(newBoard,piece.name,pos)
-        if nextBoard is None:
+        newBoard = Board(self)
+        newBoard = newBoard._putPieceSquare(piece.name,pos)
+        if newBoard is None:
             return None
         idx = -1
         currPos = pos
         vect = piece[idx]
         while vect is not None:
             nextPos = Coordinate(currPos.x-vect.x,currPos.y-vect.y)
-            newBoard = self._putPieceSquare(nextBoard,piece.name,nextPos)
+            newBoard = newBoard._putPieceSquare(piece.name,nextPos)
             if newBoard is None:
                 return None
-            nextBoard = newBoard
             currPos = nextPos
             idx -= 1
             vect = piece[idx]
@@ -260,14 +263,13 @@ class Board():
         vect = piece[idx]
         while vect is not None:
             nextPos = Coordinate(currPos.x+vect.x,currPos.y+vect.y)
-            newBoard = self._putPieceSquare(nextBoard,piece.name,nextPos)
+            newBoard = newBoard._putPieceSquare(piece.name,nextPos)
             if newBoard is None:
                 return None
-            nextBoard = newBoard
             currPos = nextPos
             idx += 1
             vect = piece[idx]
-        return Board(board=nextBoard)
+        return newBoard
         
     def nextAvailablePos(self):
         ret = None
