@@ -38,5 +38,5 @@ if __name__ == "__main__":
     hemaBoard = GenerateHemaBoard()
     hemaPieces = CreateHemaPieces()
     solver = PuzzleSolver(hemaBoard,hemaPieces)
-    solutions,nbTries,nbPcsPut = solver.solve(findAll=True,print=True,sides="both")
+    solutions,nbTries,nbPcsPut = solver.solve(findAll=True,printSol=True,sides="both")
     print("{} solutions found after {} tries and {} placed pieces:\n{}".format(len(solutions),nbTries,nbPcsPut,solutions))
