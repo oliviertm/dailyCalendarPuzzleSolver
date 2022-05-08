@@ -38,12 +38,15 @@ C++ implementation can also print all solutions of one date in a single line for
 
 This repository also contains Linux and Windows makefiles for the C++, and a bash script able to run 12 threads to look for all the solutions for 7x12x31 dates on a multicore system by using the C++ implementation, and make it print the solutions in 12 files (one for each month).
 
-Here is an example of the python code execution (configured to stop looking for other solutions when a first one has been found):
+Here is an example of the python multithreads solver execution (configured to stop looking for other solutions when a first one has been found):
 
-    Calendar puzzle date to solve (ex: 31/01/2022): 27/03/2023
-    Start multithreads puzzle solving for Monday, 27 March 2023:
+    Start solving puzzle for Monday, 27 March 2023
+    End of process 1 after 0:00:00 with 0 sol. found using 162 tries and putting 1 pieces
+    End of process 3 after 0:00:00 with 0 sol. found using 162 tries and putting 1 pieces
+    End of process 5 after 0:01:32 with 0 sol. found using 111514 tries and putting 1945 pieces
+    End of process 9 after 0:01:39 with 0 sol. found using 123200 tries and putting 2331 pieces
     
-    Solution found by process 6 in 0:01:54 after testing 120279 combinations:
+    Solution found by process 6 in 0:01:43 after testing 120279 combinations and putting 2373 pieces:
     (
     'sl'  'sl'  'Mar' 'T'   'T'   'T'   0
     'I'   'sl'  'sl'  'sl'  'T'   's'   0
@@ -54,7 +57,13 @@ Here is an example of the python code execution (configured to stop looking for 
     'L'   'L'   'L'   'L'   'Mon' 'Q'   'Q'
     0     0     0     0     'Q'   'Q'   'Q'
     )
-    1 solutions for Monday, 27 March 2023 found in 0:01:57.323853 after 1144610 tries
+    End of process 6 after 0:01:44 with 1 sol. found using 120858 tries and putting 2373 pieces
+    End of process 8 after 0:01:44 with 0 sol. found using 125798 tries and putting 2107 pieces
+    End of process 2 after 0:01:44 with 0 sol. found using 133686 tries and putting 2244 pieces
+    End of process 4 after 0:01:44 with 0 sol. found using 127502 tries and putting 2101 pieces
+    End of process 7 after 0:01:44 with 0 sol. found using 134108 tries and putting 2385 pieces
+    End of process 0 after 0:01:44 with 0 sol. found using 130200 tries and putting 2088 pieces
+    1 solutions found for Monday, 27 March 2023 in 0:01:46.255604 after 1007190 tries and placing 17576 pieces
 
 And here is an example of the C++ implementation use for the same date (which always look for all solutions before ending execution):
 
