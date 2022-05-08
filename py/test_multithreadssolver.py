@@ -7,7 +7,10 @@ def testSolve():
     puzzle=Board([[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,None,None,0,0],[0,0,None,None,0,0],[0,0,None,None,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]])
     print("===== MultiTread Solving with 2 pieces without returning the pieces, expecting 2 solutions")
     solver=MultiThreadPuzzleSolver(puzzle,[A,B])
-    solver.solve(findAll=True)
+    solutions,tries,nbPcsPut=solver.solve(findAll=True,printSol=True)
+    print("{} solutions after {} tries and {} pieces put :".format(len(solutions),tries,nbPcsPut))
+    for sol in solutions:
+        print(sol)
 
 def GenerateBoard(date):
     board = [
@@ -63,5 +66,5 @@ if __name__ == "__main__":
     solver = MultiThreadPuzzleSolver(puzzle,pieces)
     print("Start solving puzzle for {}".format(prettyDate))
     starttime = datetime.now()
-    nbSols,tries,nbPcsPut= solver.solve(findAll=True,sides="front")
-    print("{} solutions found for {} in {} after {} tries and placing {} pieces".format(nbSols,prettyDate,datetime.now() - starttime,tries,nbPcsPut))
+    sols,tries,nbPcsPut= solver.solve(findAll=True,sides="front")
+    print("{} solutions found for {} in {} after {} tries and placing {} pieces".format(len(sols),prettyDate,datetime.now() - starttime,tries,nbPcsPut))

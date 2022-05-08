@@ -17,7 +17,7 @@ def testSolve2():
     puzzle=Board([[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,None,None,None,0,0],[0,0,None,None,None,0,0],[0,0,None,None,None,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]])
     print("===== Solving with 3 pieces without returning the pieces")
     solver=PuzzleSolver(puzzle,[A,B,C])
-    solutions,nbTries,nbPcsPut = solver.solve(findAll=True,print=False)
+    solutions,nbTries,nbPcsPut = solver.solve(findAll=True,printSol=False)
     print("{} solutions found, expected 8".format(len(solutions)))
     
 def testSolve3():
@@ -27,11 +27,11 @@ def testSolve3():
     puzzle=Board([[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,None,None,None,0,0],[0,0,None,None,None,0,0],[0,0,None,None,None,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]])
     print("===== Solving with 3 pieces without returning pieces")
     solver=PuzzleSolver(puzzle,[A,B,C])
-    solutions,nbTries,nbPcsPut = solver.solve(findAll=True,print=False)
+    solutions,nbTries,nbPcsPut = solver.solve(findAll=True,printSol=False)
     print("{} solutions found, expected 4".format(len(solutions)))
     print("===== Solving  with 3 pieces with returning pieces")
     solver2=PuzzleSolver(puzzle,[A,B,C])
-    solutions2,nbTries2,nbPcsPut2 = solver2.solve(findAll=True,print=False,sides="both")
+    solutions2,nbTries2,nbPcsPut2 = solver2.solve(findAll=True,printSol=False,sides="both")
     print("{} solutions found, expected 8".format(len(solutions2)))
 
 if __name__ == "__main__":

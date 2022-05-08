@@ -14,6 +14,10 @@ class PuzzleSolver():
     - sides : "front" by default, set to "back" or "both" depending on how the pieces shall
               be used to solve the puzzle. "front" and "back" definition are related to
               the way each pieces have been defined and the coordinate system of the board
+      The solve() method returns a tuple containing:
+          - The solutions as list of Board objects
+          - The number of tries used (tries to put a piece on a square)
+          - The number of pieces successfully put on the puzzle board
     """
     def __init__(self,board,pieces):
         self._board = board
@@ -27,9 +31,9 @@ class PuzzleSolver():
         self._stop = False
         self._print=True
         
-    def solve(self,findAll=False,print=True,sides="front"):
+    def solve(self,findAll=False,printSol=True,sides="front"):
         self._findAll = findAll
-        self._print = print 
+        self._print = printSol
         self._sides = sides       
         solutions = []
         self._startTime = datetime.now()
