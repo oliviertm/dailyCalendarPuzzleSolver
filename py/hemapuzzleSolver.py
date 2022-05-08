@@ -26,7 +26,7 @@ def CreateHemaPieces():
     greenQ = Piece(shape=[Vector(1,0),Vector(0,1),Vector(-1,0),Vector(0,1),Vector(1,0),Vector(1,0)],name="vQ")
     T = Piece(shape=[Vector(1,0),Vector(1,0),Vector(-1,1),Vector(0,1)],name="T",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
     blueQ = Piece(shape=[Vector(-1,0),Vector(0,1),Vector(1,0),Vector(0,1)],name="bQ")
-    ZigZag = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1),Vector(1,0)],name="Z")
+    ZigZag = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1),Vector(1,0)],name="Z",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
     Cross= Piece(shape=[Vector(-1,1),Vector(1,0),Vector(1,0),Vector(-1,1)],name="+",relevantTrans=[Trans.UpFront])
     DoubleSquare = Piece(shape=[Vector(0,1),Vector(1,-1),Vector(0,1),Vector(0,1),Vector(1,0),Vector(0,-1)],name="OO",relevantTrans=[Trans.UpFront,Trans.RightFront])
     U = Piece(shape=[Vector(0,1),Vector(1,0),Vector(1,0),Vector(1,0),Vector(0,-1)],name="U",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
