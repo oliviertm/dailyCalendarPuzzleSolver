@@ -56,6 +56,6 @@ if __name__ == "__main__":
         solver = PuzzleSolver(puzzle,pieces)
         print("Start solving puzzle for {}".format(prettyDate))
         starttime = datetime.now()
-        solutions,tries,nbPcsPut= solver.solve(findAll=True,print=True,sides="front")
+        solutions,tries,nbPcsPut= solver.solve(findAll=True,printSol=True,sides="front")
         print("{} solutions found for {} in {} after {} tries and placing {} pieces".format(len(solutions),prettyDate,datetime.now() - starttime,tries,nbPcsPut))
      
