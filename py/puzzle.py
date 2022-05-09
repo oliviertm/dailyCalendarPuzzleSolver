@@ -18,6 +18,10 @@ class Coordinate():
         else:
             return False
         
+    def move(self,vector):
+        self.x+=vector.x
+        self.y+=vector.y
+               
     def __repr__(self):
         return "(x={},y={})".format(self.x,self.y)
 
@@ -67,29 +71,16 @@ class Piece():
     Of course, a piece of only 1 square will be represented with an empty Vector list
     The name of the piece is used to represent it on the puzzle board,
     in the example above this is "O"
-    The relevantTrans is a list of Trans which will be used to test all relevant positions
-    This class is able to compute this list automatically IF no piece square have more than
-    two neighbors, otherwise, this list will be too long, and some solutions found will
-    be the same.
-    For example, the piece above will lead to a correctly computed list of relevantTrans
-    but this piece won't:    OO
-                             OO
-    for this piece, you'll need to provide to this classe the list of relevantTrans, 
-    which will be for this piece : relevantTrans=[Trans.UpFront], because this piece
-    have two axis of symetry
     """
-    def __init__(self,shape,name,relevantTrans=None):
+    def __init__(self,shape,name):
         self._baseShape = shape
         self._currShape = shape
         self.name = name
         self._origin = 0
-        if relevantTrans is None:
-            self._relevantTrans = self.listRelevantTransform()
+        if len(self._baseShape):
+            self._relevantTrans = self._listRelevantTransform()
         else:
-            if len(self._baseShape):
-                self._relevantTrans = relevantTrans
-            else:
-                self._relevantTrans = Trans(0)
+            self._relevantTrans = Trans.UpFront
 
     def __repr__(self):
         return "(base={}\ncurrent={}\nname={}\norigin=({})\nrelevantTrans={})".format(self._baseShape,self._currShape,self.name,self._origin,self._relevantTrans)
@@ -126,14 +117,36 @@ class Piece():
     def relevantTrans(self):
         return self._relevantTrans
         
-    def listRelevantTransform(self):
-        transformedPieces = []
+    def _listRelevantTransform(self):
+        transformedPiecesFrames = []
         relevantTransform = []
         for trans in Trans:
             transPiece = self._transform(trans)
-            invertedTransPiece = [Vector(-t.x,-t.y) for t in reversed(transPiece)]
-            if transPiece not in transformedPieces and invertedTransPiece not in transformedPieces:
-                transformedPieces.append(transPiece)
+            minX = 0
+            minY = 0
+            maxX = 0
+            maxY = 0
+            pos  = Coordinate()
+            for vect in transPiece:
+                pos.move(vect)
+                if pos.x>maxX:
+                    maxX=pos.x
+                if pos.x<minX:
+                    minX=pos.x
+                if pos.y>maxY:
+                    maxY=pos.y
+                if pos.y<minY:
+                    minY=pos.y
+            xSpan=maxX-minX
+            ySpan=maxY-minY
+            pos=Coordinate(-minX,-minY)
+            transPieceFrame=[[0 for x in range(xSpan+1)] for y in range(ySpan+1)]
+            transPieceFrame[pos.y][pos.x]=1
+            for vect in transPiece:
+                pos.move(vect)
+                transPieceFrame[pos.y][pos.x]=1
+            if transPieceFrame not in transformedPiecesFrames:
+                transformedPiecesFrames.append(transPieceFrame)
                 relevantTransform.append(trans)
         return relevantTransform
         
