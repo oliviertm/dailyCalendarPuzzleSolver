@@ -80,7 +80,7 @@ class Piece():
         if len(self._baseShape):
             self._relevantTrans = self._listRelevantTransform()
         else:
-            self._relevantTrans = Trans.UpFront
+            self._relevantTrans = [Trans.UpFront]
 
     def __repr__(self):
         return "(base={}\ncurrent={}\nname={}\norigin=({})\nrelevantTrans={})".format(self._baseShape,self._currShape,self.name,self._origin,self._relevantTrans)
