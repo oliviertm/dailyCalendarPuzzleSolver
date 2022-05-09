@@ -25,10 +25,10 @@ def GenerateBoard(date):
     return Board(board)
 
 def CreatePieces():
-    O = Piece(shape=[Vector(1,0),Vector(1,0),Vector(0,1),Vector(-1,0),Vector(-1,0)],name="O",relevantTrans=[Trans.UpFront,Trans.RightFront])# 6 squares rectangle
+    O = Piece(shape=[Vector(1,0),Vector(1,0),Vector(0,1),Vector(-1,0),Vector(-1,0)],name="O")# 6 squares rectangle
     t = Piece(shape=[Vector(1,0),Vector(1,0),Vector(1,0),Vector(-1,1)],name="t")# 5 squares small t shaped
     Q = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1),Vector(-1,0)],name="Q")# 5 squares in square with teeth
-    T = Piece(shape=[Vector(1,0),Vector(1,0),Vector(-1,1),Vector(0,1)],name="T",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])# T shaped 5 squares
+    T = Piece(shape=[Vector(1,0),Vector(1,0),Vector(-1,1),Vector(0,1)],name="T")# T shaped 5 squares
     SmallsTail= Piece(shape=[Vector(1,0),Vector(0,1),Vector(1,0),Vector(1,0)],name="sl")# 5 squares small S with long tail
     BigL = Piece(shape=[Vector(0,1),Vector(1,0),Vector(1,0),Vector(1,0)],name="L")# big L
     U = Piece(shape=[Vector(0,1),Vector(1,0),Vector(1,0),Vector(0,-1)],name="U")# U shaped 5 squares
