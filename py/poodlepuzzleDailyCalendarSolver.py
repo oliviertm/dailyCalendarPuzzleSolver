@@ -34,7 +34,7 @@ def CreatePieces():
     FourFlat= Piece(shape=[Vector(0,1),Vector(0,1),Vector(0,1)],name="I")# 4 squares in line
     SmallS = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1)],name="s")# 4 squares small S
     SmallL = Piece(shape=[Vector(0,1),Vector(1,0),Vector(1,0)],name="Ls")# 4 squares small L
-    T = Piece(shape=[Vector(1,0),Vector(1,0),Vector(-1,1),Vector(0,1)],name="T",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])# T shaped 5 squares
+    T = Piece(shape=[Vector(1,0),Vector(1,0),Vector(-1,1),Vector(0,1)],name="T")# T shaped 5 squares
     Q = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1),Vector(-1,0)],name="Q")# 5 squares in square with teeth
     BigS = Piece(shape=[Vector(1,0),Vector(0,1),Vector(0,1),Vector(1,0)],name="S")# 5 squares in big S
     SmallsTail= Piece(shape=[Vector(1,0),Vector(0,1),Vector(1,0),Vector(1,0)],name="sl")# 5 squares small S with long tail
