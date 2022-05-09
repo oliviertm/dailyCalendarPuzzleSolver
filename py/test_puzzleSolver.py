@@ -11,7 +11,7 @@ def testSolve():
     solver.solve(findAll=True)
 
 def testSolve2():
-    A = Piece(shape=[Vector(0,1),Vector(0,1),Vector(1,-1)],name="A",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
+    A = Piece(shape=[Vector(0,1),Vector(0,1),Vector(1,-1)],name="A")
     B = Piece(shape=[Vector(0,1)],name="B")
     C = Piece(shape=[Vector(0,1),Vector(1,0)],name="C")
     puzzle=Board([[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,None,None,None,0,0],[0,0,None,None,None,0,0],[0,0,None,None,None,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]])
