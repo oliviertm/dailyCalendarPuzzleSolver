@@ -25,7 +25,7 @@ def GenerateBoard(date):
     return Board(board)
 
 def CreatePieces():
-    O = Piece(shape=[Vector(1,0),Vector(1,0),Vector(0,1),Vector(-1,0),Vector(-1,0)],name="O",relevantTrans=[Trans.UpFront,Trans.RightFront])# 6 squares rectangle
+    O = Piece(shape=[Vector(1,0),Vector(1,0),Vector(0,1),Vector(-1,0),Vector(-1,0)],name="O")# 6 squares rectangle
     t = Piece(shape=[Vector(1,0),Vector(1,0),Vector(1,0),Vector(-1,1)],name="t")# 5 squares small t shaped
     Q = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1),Vector(-1,0)],name="Q")# 5 squares in square with teeth
     BigS = Piece(shape=[Vector(1,0),Vector(0,1),Vector(0,1),Vector(1,0)],name="S")# 5 squares in big S
