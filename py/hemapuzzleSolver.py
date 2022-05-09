@@ -22,14 +22,14 @@ def GenerateHemaBoard():
 
 def CreateHemaPieces():
     Orange= Piece(shape=[Vector(1,0),Vector(0,1),Vector(0,1),Vector(0,1)],name="O")
-    Pink = Piece(shape=[Vector(1,0),Vector(0,1),Vector(-1,0),Vector(0,1),Vector(0,1),Vector(1,0),Vector(1,0)],name="P",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
+    Pink = Piece(shape=[Vector(1,0),Vector(0,1),Vector(-1,0),Vector(0,1),Vector(0,1),Vector(1,0),Vector(1,0)],name="P")
     greenQ = Piece(shape=[Vector(1,0),Vector(0,1),Vector(-1,0),Vector(0,1),Vector(1,0),Vector(1,0)],name="vQ")
-    T = Piece(shape=[Vector(1,0),Vector(1,0),Vector(-1,1),Vector(0,1)],name="T",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
+    T = Piece(shape=[Vector(1,0),Vector(1,0),Vector(-1,1),Vector(0,1)],name="T")
     blueQ = Piece(shape=[Vector(-1,0),Vector(0,1),Vector(1,0),Vector(0,1)],name="bQ")
-    ZigZag = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1),Vector(1,0)],name="Z",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
-    Cross= Piece(shape=[Vector(-1,1),Vector(1,0),Vector(1,0),Vector(-1,1)],name="+",relevantTrans=[Trans.UpFront])
-    DoubleSquare = Piece(shape=[Vector(0,1),Vector(1,-1),Vector(0,1),Vector(0,1),Vector(1,0),Vector(0,-1)],name="OO",relevantTrans=[Trans.UpFront,Trans.RightFront])
-    U = Piece(shape=[Vector(0,1),Vector(1,0),Vector(1,0),Vector(1,0),Vector(0,-1)],name="U",relevantTrans=[Trans.UpFront,Trans.RightFront,Trans.DownFront,Trans.LeftFront])
+    ZigZag = Piece(shape=[Vector(0,1),Vector(1,0),Vector(0,1),Vector(1,0)],name="Z")
+    Cross= Piece(shape=[Vector(-1,1),Vector(1,0),Vector(1,0),Vector(-1,1)],name="+")
+    DoubleSquare = Piece(shape=[Vector(0,1),Vector(1,-1),Vector(0,1),Vector(0,1),Vector(1,0),Vector(0,-1)],name="OO")
+    U = Piece(shape=[Vector(0,1),Vector(1,0),Vector(1,0),Vector(1,0),Vector(0,-1)],name="U")
     L = Piece(shape=[Vector(0,1),Vector(0,1),Vector(1,0),Vector(1,0)],name="L")
     h = Piece(shape=[Vector(0,1),Vector(0,1),Vector(1,-1),Vector(1,0),Vector(0,1)],name="h")
     return [Orange,Pink,greenQ,T,blueQ,ZigZag,Cross,DoubleSquare,U,L,h]
