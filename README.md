@@ -16,7 +16,7 @@ Moreover, and because python implementation is 182 times slower than the C++ imp
 
 Unlike all the other codes made to solve these puzzles I saw, this code is not "brut force" at all, and avoid tying any obviously impossible position.
 
-This code is not running imbricated loops with X and Y size of the puzzle, to try to fit the pieces, but is instead looking for the first available square from top left, and then recursively try to fit all remaining pieces on this square. Each time a piece fit, the recursive function is called with a board containing this newly fitted piece, and a list of pieces from which it has been removed.
+This code is not running imbricated loops with X and Y size of the puzzle, to try to fit the pieces, but is instead looking for the first available square from top left, and then recursively try to fit all remaining pieces on this square. Each time a piece fits, the recursive function is called with a board containing this newly fitted piece, and a list of pieces from which this placed piece has been removed. If the list of pieces to fit runs empty, the board is a solution. If the piece to fit cannot be put on the next available square of the board, the recursive call ends, and returns, to let the recursive algorithm keep on running on other branches (try other pieces on this square).
 
 Pieces and their rotations are defined such as no isomorphic transformation remains, to avoid getting the same solution twice or more.
 
