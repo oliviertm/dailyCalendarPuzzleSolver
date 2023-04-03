@@ -81,14 +81,15 @@ And here is an example of the C++ implementation use for the same date on the sa
 
     $./poodlepuzzleDailyCalendarSolver.bin 1 27 3
     Solutions:
-      7  7 -1  4  4  4 -1
-      1  7  7  7  4  2 -1
-      1  6  6  3  4  2  2
-      1 10  6  3  3  3  2
-      1 10  6  6  9  9  9
-      8 10 10 10  9 -1  9
-      8  8  8  8 -1  5  5
-     -1 -1 -1 -1  5  5  5
+     _ _   _ _ _
+    |_  |_|_   _|
+    | |_ _ _| | |_
+    | |_  | |_|_  |
+    | | | |_ _ _|_|
+    |_| |_ _|  _  |
+    | |_ _ _|_|_|_|
+    |_ _ _ _|_|   |
+            |_ _ _|
     
     1 solutions found after 3026228 tries for Monday 27  March
     End of program reached,  execution duration: 9 seconds
