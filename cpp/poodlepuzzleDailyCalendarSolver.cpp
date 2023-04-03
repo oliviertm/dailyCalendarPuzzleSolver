@@ -298,6 +298,7 @@ Board * Board::putPiece(Piece &piece, Coord pos)
     return newBoard;
 }
 
+// Print board as python list
 void Board::print(void)
 {
      int y,x;
@@ -322,19 +323,21 @@ void Board::print(void)
      cout << "]";
 }
 
+// Print board in ASCII art
 ostream & Board::put(ostream & o,char sep) const
 {
     int y,x;
-    for(y=arrayOrigin.y;y<(BDYL+arrayOrigin.y);y++){
-        for(x=arrayOrigin.x;x<(BDXL+arrayOrigin.x);x++){
-            if( (boardArray[y][x] < 0) || (boardArray[y][x] > 9) ){
-                if (boardArray[y][x] < 0) {
-                    o << "   ";
-                } else {
-                    o<<" "<<to_string(boardArray[y][x]);
-                }
+    for(y=arrayOrigin.y-1;y<(BDYL+arrayOrigin.y);y++){
+        for(x=arrayOrigin.x;x<(BDXL+arrayOrigin.x+1);x++){
+            if( boardArray[y][x-1] != boardArray[y][x] ){
+                o << "|";
            } else {
-                o<<"  "<<to_string(boardArray[y][x]);
+                o<<" ";
+           }
+           if( boardArray[y+1][x] != boardArray[y][x] ){
+                o << "_";
+           } else {
+                o<<" ";
            }
         }
         o<<endl;
