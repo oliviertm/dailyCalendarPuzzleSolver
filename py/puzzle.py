@@ -219,9 +219,8 @@ class Board():
                         yMin = y
         return Coordinate(xMin,yMin)
 
-    def __repr__(self):
+     def __repr__(self):
         ret = ""
-        padding = max([len(repr(i)) for j in self._board for i in j])+1
         xMax = 0
         xMin= len(self._board[0])
         yMax = 0
@@ -237,16 +236,19 @@ class Board():
                         yMin = y
                     if y > yMax:
                         yMax = y
-        printedBoard=[]
         for y in range(len(self._board)):
-            if y >= yMin and y <= yMax:
-                printedBoard.append([])
             for x in range(len(self._board[y])):
-                if x >= xMin and x <= xMax and y >= yMin and y <= yMax:
-                    printedBoard[y-yMin].append(self._board[y][x])
-        for line in printedBoard:
-            ret += "".join([repr(i).ljust(padding) for i in line]) + "\n"
-        return "(\n{})".format(ret)
+                if x >= (xMin-1) and x <= (xMax+1) and y >= (yMin-1) and y <= yMax:
+                    c=" "
+                    if self._board[y][x] != self._board[y][x-1] :
+                        c="|"
+                    ret+=c
+                    c=" "
+                    if self._board[y][x] != self._board[y+1][x] :
+                        c="_"
+                    ret+=c
+            ret += "\n"
+        return ret
         
     def _putPieceSquare(self,name,pos):
         if self._board[self._origin.y+pos.y][self._origin.x+pos.x] is None:
