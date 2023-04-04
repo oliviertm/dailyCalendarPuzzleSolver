@@ -56,16 +56,16 @@ Here is an example of the python multithreads solver execution on a 4 cores CPU 
     End of process 5 after 0:01:32 with 0 sol. found using 111514 tries and putting 1945 pieces
     
     Solution found by process 6 in 0:01:38 after testing 120279 combinations and putting 2373 pieces:
-    (
-    'sl'  'sl'  'Mar' 'T'   'T'   'T'   0
-    'I'   'sl'  'sl'  'sl'  'T'   's'   0
-    'I'   'S'   'S'   'Ls'  'T'   's'   's'
-    'I'   'LL'  'S'   'Ls'  'Ls'  'Ls'  's'
-    'I'   'LL'  'S'   'S'   'U'   'U'   'U'
-    'L'   'LL'  'LL'  'LL'  'U'   '27'  'U'
-    'L'   'L'   'L'   'L'   'Mon' 'Q'   'Q'
-    0     0     0     0     'Q'   'Q'   'Q'
-    )
+     _ _ _ _ _ _
+    |_  |_|_   _|
+    | |_ _ _| | |_
+    | |_  | |_|_  |
+    | | | |_ _ _|_|
+    |_| |_ _|  _  |
+    | |_ _ _|_|_|_|
+    |_ _ _ _|_|   |
+            |_ _ _|
+
     End of process 9 after 0:01:39 with 0 sol. found using 123200 tries and putting 2331 pieces
     End of process 6 after 0:03:26 with 1 sol. found using 307472 tries and putting 6268 pieces
     End of process 8 after 0:03:38 with 0 sol. found using 327234 tries and putting 5894 pieces
