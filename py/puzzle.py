@@ -247,7 +247,8 @@ class Board():
                     if self._board[y][x] != self._board[y+1][x] :
                         c="_"
                     ret+=c
-            ret += "\n"
+             if y >= (yMin-1) and y <= yMax:
+                ret += "\n"
         return ret
         
     def _putPieceSquare(self,name,pos):
