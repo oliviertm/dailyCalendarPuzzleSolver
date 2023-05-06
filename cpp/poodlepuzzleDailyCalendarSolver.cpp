@@ -2,6 +2,8 @@
 #include <string>
 #include <time.h>
 #include <stdexcept>
+#include <ctime>
+#include <chrono>
 
 using namespace std;
 
@@ -435,49 +437,49 @@ void printMonth(int monthNum)
 {
     switch(monthNum){
         case 1:
-            cout << " January";
+            cout << "January";
             break;
         case 2:
-            cout << " February";
+            cout << "February";
             break;
         case 3:
-            cout << " March";
+            cout << "March";
             break;
         case 4:
-            cout << " April";
+            cout << "April";
             break;
         case 5:
-            cout << " May";
+            cout << "May";
             break;
         case 6:
-            cout << " June";
+            cout << "June";
             break;
         case 7:
-            cout << " July";
+            cout << "July";
             break;
         case 8:
-            cout << " August";
+            cout << "August";
             break;
         case 9:
-            cout << " September";
+            cout << "September";
             break;
         case 10:
-            cout << " October";
+            cout << "October";
             break;
         case 11:
-            cout << " November";
+            cout << "November";
             break;
         case 12:
-            cout << " December";
+            cout << "December";
             break;
         default:
-            cout << " InvalidMonthNumber";
+            cout << "InvalidMonthNumber";
     }
 }
 
-void printHelp(string arg="")
+void printHelp(string prog,string msg="", string arg="")
 {
-    cout << "Invalid argument : "<< arg <<"\nValid arguments are: \nweekday day month [i] [s] [1-10]\nex :\n5 23 1\nfor Friday 23rd January\n'i' is optionnal and make the results appear once all of them has been found in a single line of python syntax\n's' is optionnal and make the pieces be used with their smooth side up as reference side, instead their frosted side\n'1' to '10' numbers may be added to specify the pieces which can be turn upside down during solutions searching." << endl;
+    cout << msg << " " << arg << "\nSynopsis:\n\n    [weekday day month] [-h] [-i] [-s] [-t [PcsNb] [PcsNb] [PcsNb]...]\n\nDescription:\n\n    Solver for Daily Calendar Puzzle with month, day of month and day of week\n\nArguments:\n\n    weekday day month\n          Date to solve. weekday from 1=Monday to 7=Sunday, day from 1 to 31 and month from 1 to 12.\n\n    -h    Print this help\n\n    -i    Make the results appear once all of them has been found in a single line of python syntax\n\n    -s     Make the pieces be used with their smooth side up as reference side, instead their frosted side\n\n    -t    Specify whuch pieces can be flipped (use both sides instead reference side only)\n\n    PcsNb Number of a piece in range 1-10 added after '-t' to specify a pieces which shall be used both sides during solutions searching.\n\n          Pieces nombers are these ones:\n\n          7  7     4  4  4\n          1  7  7  7  4  2\n          1  6  6  3  4  2  2\n          1 10  6  3  3  3  2\n          1 10  6  6  9  9  9\n          8 10 10 10  9     9\n          8  8  8  8     5  5\n                      5  5  5\n\nExample\n\n    To solve Friday 23rd of January\n\n    " << prog << " 5 23 1" << endl;
 }
 
 
@@ -486,9 +488,9 @@ int main(int argc, char* argv[])
     time_t startTime, endTime;
     time_t elapsed; 
     time(&startTime);
-    int wdayNum;
-    int dayNum;
-    int monthNum;
+    int wdayNum = 0;
+    int dayNum = 0;
+    int monthNum = 0;
     int fourFlatTransLen=2;
     int smallSTransLen=2;
     int smallLTransLen=4;
@@ -504,53 +506,117 @@ int main(int argc, char* argv[])
     Trans allTrans[8] = {Trans::up,Trans::right,Trans::down,Trans::left,Trans::upBack,Trans::rightBack,Trans::downBack,Trans::leftBack};
     Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
     Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
-    if(argc>=4){
-        wdayNum = stoi(argv[1]);// week day number, monday=1, tuesday=2...
-        dayNum = stoi(argv[2]);//day number from 1 to 31
-        monthNum = stoi(argv[3]);// month number, january=1, february=2...
-        if(argc>4) {
-            for(int i=4; i<argc;i++){
-                string arg(argv[i]);
-                if(arg.compare("i")==0) {
-                    inLine=true;//inline python processable printing of the results
+    bool isArgsValid=true;
+    bool isArgValid;
+    bool isArgPcsFlip=false;
+    string prog(argv[0]);
+    for(int i=1; i<argc;i++){
+        isArgValid=false;
+        string arg(argv[i]);
+        if( isArgsValid && !isArgPcsFlip && (wdayNum == 0 || dayNum == 0 || monthNum == 0 ) ){
+            int p;
+            try {
+                p = stoi(arg);// convert argument to a number
+            } catch ( std::invalid_argument& e ){
+                printHelp(prog,"Invalid number for weekday, day or month number:",arg);
+                isArgsValid=false;
+            }
+            if( isArgsValid && !isArgValid && wdayNum == 0 ){
+                if( p>=1 && p<=7){
+                    wdayNum = p;// week day number, monday=1, tuesday=2...
+                    isArgValid=true;
                 } else {
-                    if(arg.compare("s")==0){
-                        fSide=false;//front side not used, back side of pieces are the base side to use
-                    } else {
-                        int p;
-                        try {
-                            p = stoi(arg);// convert argument to a number to identify the piece to use on both sides
-                        } catch ( std::invalid_argument& e){
-                            printHelp(arg);
-                            return 1;
-                        }
-                        switch(p){
-                            case 2:
-                                smallSTransLen=4;
-                                break;
-                            case 3:
-                                smallLTransLen=8;
-                                break;
-                            case 6:
-                                bigSTransLen=4;
-                                break;
-                            case 7:
-                                smallStailTransLen=8;
-                                break;
-                            case 8:
-                                bigLTransLen=8;
-                                break;
-                            case 5:
-                                qTransLen=8;
-                                break;
-                            default:
-                                break;//other pieces are the same once returned, so they are not returned to avoid creating identical solutions
-                        }
-                    }
+                    printHelp(prog,"Week day number out of [1-7] range:",arg);
+                    isArgsValid=false;
                 }
             }
-            
+            if( isArgsValid && !isArgValid && dayNum == 0 ){
+                if( p>= 1 && p<=31 ){
+                    dayNum = p;//day number from 1 to 31
+                    isArgValid=true;
+                } else {
+                    printHelp(prog,"Month day number out of [1-31] range:",arg);
+                    isArgsValid=false;
+                }
+            }
+            if( isArgsValid && !isArgValid && monthNum == 0 ){
+                if( p>= 1 && p<=12 ){
+                    monthNum = p;// month number, january=1, february=2...
+                    isArgValid=true;
+                 } else {
+                    printHelp(prog,"Month number out of [1-12] range:",arg);
+                    isArgsValid=false;
+                }
+            }
         }
+        if( !isArgValid && isArgsValid && arg.compare("-i")==0) {
+            inLine=true;//inline python processable printing of the results
+            isArgValid=true;
+        }
+        if( !isArgValid && isArgsValid && arg.compare("-s")==0){
+            fSide=false;//front side not used, back side of pieces are the base side to use
+            isArgValid=true;
+        }
+        if( !isArgValid && isArgsValid && arg.compare("-t")==0){
+            isArgPcsFlip = true; // next arguments are pieces numbers
+            isArgValid=true;
+        }
+         if( !isArgValid && isArgsValid && arg.compare("-h")==0 ){
+            printHelp(prog);
+            isArgsValid=true;
+            isArgsValid=false;
+        }
+        if( !isArgValid && isArgsValid && isArgPcsFlip ){
+            int p;
+            try {
+                p = stoi(arg);// convert argument to a number to identify the piece to use on both sides
+            } catch ( std::invalid_argument& e){
+                printHelp(prog,"Invalid piece number of range [1-10]:",arg);
+                isArgsValid=false;
+            }
+            switch(p){
+                case 2:
+                    smallSTransLen=4;
+                    break;
+                case 3:
+                    smallLTransLen=8;
+                    break;
+                case 6:
+                    bigSTransLen=4;
+                    break;
+                case 7:
+                    smallStailTransLen=8;
+                    break;
+                case 8:
+                    bigLTransLen=8;
+                    break;
+                case 5:
+                    qTransLen=8;
+                    break;
+                default:
+                    break;//other pieces are the same once returned, so they are not returned to avoid creating identical solutions
+            }
+        }    
+    }
+    if( wdayNum == 0 || dayNum == 0 || monthNum == 0 ){
+        if(wdayNum == 0 && dayNum == 0 && monthNum == 0 ){
+            // get the current time
+            auto now = std::chrono::system_clock::now();
+            std::time_t time = std::chrono::system_clock::to_time_t(now);
+             // get the current day of week, day in month, and month number
+            std::tm* timeinfo = std::localtime(&time);
+            wdayNum = timeinfo->tm_wday == 0 ? 7 : timeinfo->tm_wday;
+            dayNum = timeinfo->tm_mday;
+            monthNum = timeinfo->tm_mon + 1;
+            cout << "No date provided, solving current date." << endl;
+        } else {
+            if( isArgsValid ){
+                isArgsValid = false;
+                printHelp(prog,"Missing at least one of the following numbers : weekday day month");
+            }
+        }
+    }
+    if( isArgsValid ) {
         if(fSide==false){
             // update relevant transformations lists to put back side first to use it as base side
             allTrans[0] = Trans::upBack;
@@ -644,13 +710,12 @@ int main(int argc, char* argv[])
             cout  << "], \"nbSol\": " << nbSols << "}";
         }
     } else {
-        printHelp();
         return 2;
     }
     if(inLine==false){
         time(&endTime);
         elapsed = endTime - startTime;
-        cout << "End of program reached,  execution duration: " << elapsed << " seconds" << endl;
+        cout << "End of program reached, execution duration: " << elapsed << " seconds" << endl;
     }
     return 0;
 }
