@@ -730,6 +730,13 @@ int main(int argc, char* argv[])
             }
             cout  << "], \"nbSol\": " << nbSols << "}";
         }
+        if(!sols){
+            if(fSide){
+                cout << "Try with option: -t 5 2 " << endl;
+            } else {
+                cout << "Try with option: -t 5" << endl;
+            }
+        }
     }
     if(inLine==false){
         time(&endTime);
