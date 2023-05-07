@@ -732,8 +732,10 @@ int main(int argc, char* argv[])
         }
         if(!sols){
             if(fSide){
+                // turning pieces 5 is enough to get solution for all dates like wed 27 when using frosted side only, except sun 6th apr, for which another piece need to be returned
                 cout << "Try with option: -t 5 2 " << endl;
             } else {
+                // turning piece 5 is enough when using smooth side as reference to get a solution for all dates like mon 27th which have no solution smooth side only
                 cout << "Try with option: -t 5" << endl;
             }
         }
