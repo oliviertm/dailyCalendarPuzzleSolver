@@ -94,7 +94,7 @@ And here is an example of the C++ implementation use for the same date on the sa
     1 solutions found after 3026228 tries for Monday 27  March
     End of program reached,  execution duration: 9 seconds
 
-This date have been chosen for the example above because it only have one solution when the forsted side of the pieces is used.
+This date have been chosen for the example above because it has only one solution using pieces forsted only.
 
 ## Dragon Fjord Puzzle-A-Day Solver
 
