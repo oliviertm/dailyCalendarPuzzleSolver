@@ -219,7 +219,7 @@ class Board():
                         yMin = y
         return Coordinate(xMin,yMin)
 
-     def __repr__(self):
+    def __repr__(self):
         ret = ""
         xMax = 0
         xMin= len(self._board[0])
@@ -247,7 +247,7 @@ class Board():
                     if self._board[y][x] != self._board[y+1][x] :
                         c="_"
                     ret+=c
-             if y >= (yMin-1) and y <= yMax:
+            if y >= (yMin-1) and y <= yMax:
                 ret += "\n"
         return ret
         
