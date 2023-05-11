@@ -1,5 +1,5 @@
 from puzzle import Vector, Trans, Piece, Board
-from solver import PuzzleSolver
+from multithreadssolver import MultiThreadPuzzleSolver as PuzzleSolver
 from datetime import datetime
 
 def GenerateBoard(date):
@@ -54,8 +54,8 @@ if __name__ == "__main__":
         pieces = CreatePieces()
         puzzle = GenerateBoard(date)
         solver = PuzzleSolver(puzzle,pieces)
-        print("Start solving puzzle for {}".format(prettyDate))
+        print("Start multithreads solving puzzle for {}".format(prettyDate))
         starttime = datetime.now()
-        solutions,tries,nbPcsPut= solver.solve(findAll=True,printSol=True,sides="front")
+        solutions,tries,nbPcsPut= solver.solve(findAll=True,printSol=True,sides="both")
         print("{} solutions found for {} in {} after {} tries and placing {} pieces".format(len(solutions),prettyDate,datetime.now() - starttime,tries,nbPcsPut))
      
