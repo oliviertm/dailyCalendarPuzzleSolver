@@ -220,7 +220,7 @@ class Board():
         return Coordinate(xMin,yMin)
 
     def __repr__(self):
-        ret = ""
+        ret = "\n"
         xMax = 0
         xMin= len(self._board[0])
         yMax = 0
