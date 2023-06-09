@@ -96,6 +96,8 @@ And here is an example of the C++ implementation use for the same date on the sa
 
 This date have been chosen for the example above because it has only one solution using pieces forsted only.
 
+It is possible to improve the solving speed ([this solver](https://github.com/StevHenry/calendar-puzzle) is 2.5 times faster than this implementation), but this implementation is intentionally not 100% optimize to have better readability and genericity.
+
 ## Dragon Fjord Puzzle-A-Day Solver
 
 This solver is a python one based on the common puzzle.py and solver.py/multithreadsolver.py used for the other puzzles solvers.
