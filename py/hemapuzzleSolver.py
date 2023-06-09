@@ -1,5 +1,5 @@
 from puzzle import Vector, Trans, Piece, Board
-from solver import PuzzleSolver
+from multithreadssolver import MultiThreadPuzzleSolver as PuzzleSolver
 
 def GenerateHemaBoard():
     board = [
@@ -32,7 +32,7 @@ def CreateHemaPieces():
     U = Piece(shape=[Vector(0,1),Vector(1,0),Vector(1,0),Vector(1,0),Vector(0,-1)],name="U")
     L = Piece(shape=[Vector(0,1),Vector(0,1),Vector(1,0),Vector(1,0)],name="L")
     h = Piece(shape=[Vector(0,1),Vector(0,1),Vector(1,-1),Vector(1,0),Vector(0,1)],name="h")
-    return [Orange,Pink,greenQ,T,blueQ,ZigZag,Cross,DoubleSquare,U,L,h]
+    return [Orange,greenQ,Pink,DoubleSquare,T,L,blueQ,U,h,Cross,ZigZag]
 
 if __name__ == "__main__":
     hemaBoard = GenerateHemaBoard()
