@@ -51,7 +51,7 @@ C++ implementation can also print all solutions of one date in a single line for
 
 This repository also contains Linux and Windows makefiles for the C++, and a bash script able to run 12 threads to look for all the solutions for 7x12x31 dates on a multicore system by using the C++ implementation, and make it print the solutions in 12 files (one for each month).
 
-Here is an example of the python multithreads solver execution on a 4 cores CPU with only front side of pieces is used:
+Here is an example of the python multiprocesses solver execution on a 4 cores CPU with only front side of pieces is used:
 
     Start solving puzzle for Monday, 27 March 2023
     End of process 3 after 0:00:00 with 0 sol. found using 162 tries and putting 1 pieces
@@ -78,7 +78,7 @@ Here is an example of the python multithreads solver execution on a 4 cores CPU 
     End of process 7 after 0:09:00 with 0 sol. found using 798072 tries and putting 14973 pieces
     1 solutions found for Monday, 27 March 2023 in 0:09:02.944981 after 3026228 tries and placing 54391 pieces
 
-The multithreads implementation creates one thread for each piece, and each thread looks for all the solutions with this piece on the top leftmost square.
+The multiprocesses implementation creates one process for each piece, and each process looks for all the solutions with this piece on the top leftmost square.
 
 And here is an example of the C++ implementation use for the same date on the same CPU:
 
@@ -99,7 +99,8 @@ And here is an example of the C++ implementation use for the same date on the sa
 
 This date have been chosen for the example above because it has only one solution using pieces forsted only.
 
-It is possible to improve the solving speed ([this solver](https://github.com/StevHenry/calendar-puzzle) is 2.5 times faster than this implementation), but this implementation is intentionally not 100% optimize to have better readability and genericity.
+It is possible to improve the solving speed ([this solver](https://github.com/StevHenry/calendar-puzzle) is 2.5 times faster than this implementation, even if it can't display the solutions, but only count them),
+This implementation is intentionally not fully optimize to have better readability and genericity.
 
 ## Dragon Fjord Puzzle-A-Day Solver
 
