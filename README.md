@@ -10,7 +10,7 @@ These four examples of puzzles are :
 - Jarring Words Calendar Puzzle
 - HEMA square puzzle
 
-Moreover, and because python implementation is 182 times slower than the C++ implementation, the python solver.py also have a multithreaded version : multithreadsolver.py
+Moreover, and because python implementation is 182 times slower than the C++ implementation, the python solver.py also have a multiprocesses version, badly named : multithreadssolver.py
 
 ## Used Solving strategy
 
@@ -18,7 +18,10 @@ Unlike all the other codes made to solve these puzzles I saw, this code is not "
 
 This code is not running imbricated loops with X and Y size of the puzzle, to try to fit the pieces, but is instead looking for the first available square from top left, and then recursively try to fit all remaining pieces on this square. Each time a piece fits, the recursive function is called with a board containing this newly fitted piece, and a list of pieces from which this placed piece has been removed. If the list of pieces to fit runs empty, the board is a solution. If the piece to fit cannot be put on the next available square of the board, the recursive call ends, and returns, to let the recursive algorithm keep on running on other branches (try other pieces on this square).
 
-Pieces and their rotations are defined such as no isomorphic transformation remains, to avoid getting the same solution twice or more.
+Pieces and their rotations are defined such as no isomorphic transformation remains, to avoid getting the same solution twice or more. The python code automatically detects isomorphic transformations of pieces (the C++ one doesn't).
+
+Board is stored as an array and pieces as lists of vectors, each vector giving the coordinates to go from a square of the piece to another one (until we have gone through all squares of the piece).
+Due to this, a piece of a single square would be defined by an empty vectors list (such piece doesn't exist in the puzzles given here).
 
 Object oriented design is used : piece and board are classes.
 
