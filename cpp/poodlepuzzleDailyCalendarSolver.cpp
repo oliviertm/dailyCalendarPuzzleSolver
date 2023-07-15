@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <ctime>
 #include <chrono>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -347,9 +348,9 @@ ostream & Board::put(ostream & o,char sep) const
     return o<<sep;
 }
 
-bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbTries,int * nbPlPcs,bool printSol)
+bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbTries,int * nbPlPcs,bool printSol,bool isUniqueSol, bool &keepSearching)
 {
-    bool keepBoard = false;
+    bool isSolution = false;
     Coord pos;
     Trans* trans;
     Board* newBoard;
@@ -358,10 +359,13 @@ bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbT
     int newNbPieces =  nbPieces - 1;
     if(nbPieces != 0){
         board.nextAvailablePos(&pos);
-        for(int pIdx=0;pIdx<nbPieces;pIdx++){
-            for(int origin=0;origin<=pieces[pIdx]->shapeLength;origin++){
+        int pIdx=0;
+        while(pIdx<nbPieces && keepSearching){
+            int origin=0;
+            while(origin<=pieces[pIdx]->shapeLength && keepSearching){
                 trans=pieces[pIdx]->relevantTrans;
-                for(int tIdx=0;tIdx<pieces[pIdx]->nbRelevantTrans;tIdx++){
+                int tIdx=0;
+                while(tIdx<pieces[pIdx]->nbRelevantTrans && keepSearching){
                     pieces[pIdx]->origin=origin;
                     pieces[pIdx]->transform(*trans);
                     newBoard = board.putPiece(*pieces[pIdx],pos);
@@ -380,28 +384,34 @@ bool Solve(Board& board, Piece * pieces[], int nbPieces, Board ** sols,int * nbT
                         } else {
                             newPieces = NULL;
                         }
-                        keepBoard = Solve(*newBoard,newPieces,newNbPieces,sols,nbTries,nbPlPcs,printSol);
-                        if(keepBoard != true){
+                        isSolution = Solve(*newBoard,newPieces,newNbPieces,sols,nbTries,nbPlPcs,printSol,isUniqueSol,keepSearching);
+                        if(isSolution != true){
                             delete newBoard;
                         }
-                        keepBoard = false;
+                        if( isUniqueSol == true && isSolution == true ){
+                                 keepSearching = false;
+                        }
+                        isSolution = false;
                         delete newPieces;
                     }
-                     trans++;
+                    tIdx++;
+                    trans++;
                 }
+                origin++;
             }
+            pIdx++;
         }
     } else {
         if(*sols){
             board.next = *sols;
         }
         *sols = &board;
-        keepBoard = true;
+        isSolution = true;
         if(printSol==true){
             cout << board << endl;
         }
     }
-    return keepBoard;
+    return isSolution;
 }
 
 void printWeekday(int weekdayNum)
@@ -483,15 +493,13 @@ void printError(string msg, string arg=""){
 
 void printHelp(string prog)
 {
-    cout << "Synopsis:\n\n    [weekday day month] [-h] [-i] [-s] [-t [PcsNb] [PcsNb] [PcsNb]...]\n\nDescription:\n\n    Solver for Daily Calendar Puzzle with month, day of month and day of week\n\nArguments:\n\n    weekday day month\n          Date to solve. weekday from 1=Monday to 7=Sunday, day from 1 to 31 and month from 1 to 12.\n\n    -h    Print this help\n\n    -i    Make the results appear once all of them has been found in a single line of python syntax\n\n    -s     Make the pieces be used with their smooth side up as reference side, instead their frosted side\n\n    -t    Specify which pieces can be flipped (use both sides instead reference side only)\n\n    PcsNb Number of a piece in range 1-10 added after '-t' to specify a pieces which shall be used both sides during solutions searching.\n\n          Pieces nombers are these ones:\n\n          7  7     4  4  4\n          1  7  7  7  4  2\n          1  6  6  3  4  2  2\n          1 10  6  3  3  3  2\n          1 10  6  6  9  9  9\n          8 10 10 10  9     9\n          8  8  8  8     5  5\n                      5  5  5\n\nExample\n\n    To solve Friday 23rd of January\n\n    " << prog << " 5 23 1\n" << endl;
+    cout << "Synopsis:\n\n    [weekday day month] [-h] [-i] [-s] [-t [PcsNb] [PcsNb] [PcsNb]...]\n\nDescription:\n\n    Solver for Daily Calendar Puzzle with month, day of month and day of week. Return value is 0 if at least one solution has been found or -h option is used.\n\nArguments:\n\n    weekday day month\n          Date to solve. weekday from 1=Monday to 7=Sunday, day from 1 to 31 and month from 1 to 12.\n\n    -h    Print this help\n\n    -u    Stop looking for solutions when a first one has been found\n\n    -i    Make the results appear once all of them has been found in a single line of python syntax\n\n    -s     Make the pieces be used with their smooth side up as reference side, instead their frosted side\n\n    -t    Specify which pieces can be flipped (use both sides instead reference side only)\n\n    PcsNb Number of a piece in range 1-10 added after '-t' to specify a pieces which shall be used both sides during solutions searching.\n\n          Pieces nombers are these ones:\n\n          7  7     4  4  4\n          1  7  7  7  4  2\n          1  6  6  3  4  2  2\n          1 10  6  3  3  3  2\n          1 10  6  6  9  9  9\n          8 10 10 10  9     9\n          8  8  8  8     5  5\n                      5  5  5\n\nExample\n\n    To solve Friday 23rd of January\n\n    " << prog << " 5 23 1\n" << endl;
 }
 
 
 int main(int argc, char* argv[])
 {
-    time_t startTime, endTime;
-    time_t elapsed; 
-    time(&startTime);
+    auto startTime = std::chrono::high_resolution_clock::now();
     int wdayNum = 0;
     int dayNum = 0;
     int monthNum = 0;
@@ -507,6 +515,7 @@ int main(int argc, char* argv[])
     int lEqualTransLen=4;
     bool inLine = false;
     bool fSide=true;
+    Board * sols = NULL;
     Trans allTrans[8] = {Trans::up,Trans::right,Trans::down,Trans::left,Trans::upBack,Trans::rightBack,Trans::downBack,Trans::leftBack};
     Trans allFaceTrans[4] = {Trans::up,Trans::right,Trans::down,Trans::left};
     Trans upRightTrans[4] = {Trans::up,Trans::right,Trans::upBack,Trans::rightBack};
@@ -514,6 +523,7 @@ int main(int argc, char* argv[])
     bool isArgValid;
     bool isHelpOpt=false;
     bool isArgPcsFlip=false;
+    bool isUniqueSol=false;
     string prog(argv[0]);
     for(int i=1; i<argc;i++){
         isArgValid=false;
@@ -564,6 +574,10 @@ int main(int argc, char* argv[])
         }
         if( !isArgValid && isArgsValid && arg.compare("-t")==0){
             isArgPcsFlip = true; // next arguments are pieces numbers
+            isArgValid=true;
+        }
+        if( !isArgValid && isArgsValid && arg.compare("-u")==0){
+            isUniqueSol = true;
             isArgValid=true;
         }
          if( !isArgValid && isArgsValid && arg.compare("-h")==0 ){
@@ -633,9 +647,9 @@ int main(int argc, char* argv[])
     if( !isArgsValid || isHelpOpt ) {
         printHelp(prog);
         if( isHelpOpt){
-            return 0;
+            exit(0);
         } else {
-            return 1;
+            exit(1);
         }
     } else {
         if(fSide==false){
@@ -657,7 +671,7 @@ int main(int argc, char* argv[])
             upRightTrans[2] = Trans::up;
             upRightTrans[3] = Trans::right;
         }
-          // Create the 10 pieces      
+        // Create the 10 pieces      
         Vect FourFlatArray[3]= {Vect(0,1),Vect(0,1),Vect(0,1)};
         Piece FourFlat(FourFlatArray, 3, 1, upRightTrans, fourFlatTransLen);
         Vect SmallSArray[3]=  {Vect(0,1),Vect(1,0),Vect(0,1)};;
@@ -685,15 +699,15 @@ int main(int argc, char* argv[])
         int nbTries=0;
         int nbSols=0;
         int nbPlPcs=0;
-        Board * sols = NULL;
         Board * nextSol;
         // Create the list of pieces to give to the solver
         Piece * puzzlePieces[10] = {&FourFlat,&U,&Q,&SmallsTail,&SmallL,&BigL,&SmallS,&Lequal,&BigS,&T};//this order is from the most to least frequent appearance in first case, when pieces are used on their front side, fSide=true
         if(inLine==false){
             cout << "Solutions:" << endl;
         }
+        bool keepSearching = true;
         // Call the solving function
-        Solve(puzzle, puzzlePieces, 10, &sols,&nbTries,&nbPlPcs,(inLine==false));
+        Solve(puzzle, puzzlePieces, 10, &sols,&nbTries,&nbPlPcs,(inLine==false),isUniqueSol,keepSearching);
 
         if(inLine==false){
             // Print the solution as human readable
@@ -741,9 +755,12 @@ int main(int argc, char* argv[])
         }
     }
     if(inLine==false){
-        time(&endTime);
-        elapsed = endTime - startTime;
-        cout << "End of program reached, execution duration: " << elapsed << " seconds" << endl;
+        auto endTime = std::chrono::high_resolution_clock::now();
+        cout << "End of program reached, execution duration: " << (float)(std::chrono::duration_cast<std::chrono::milliseconds>(endTime-startTime).count())/1000 << " seconds" << endl;
     }
-    return 0;
+    if ( !sols ){
+        exit(1);
+    } else {
+        exit(0);
+    }
 }
