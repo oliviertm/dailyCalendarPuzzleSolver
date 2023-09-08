@@ -157,8 +157,13 @@ ostream & Piece::put(ostream & o,char sep) const
 // Puzzle board sizes definition, to be customize for other types of puzzle board
 #define BXL 13 // X len of the puzzle board
 #define BYL 14 // Y len of the puzzle board
-#define BDXL 7 // X span from board origin to display
-#define BDYL 8 // Y span from board origin to display
+#define BOX 3 // Board origin in X, to prevent pieces from spanning out of board array
+#define BOY 3 // Board origin in Y, to prevent pieces from spanning out of board array
+// BOX and BOY depends of the max dimension of the biggest piece
+#define BDXL 7 // X span from board origin BOX to display area border
+#define BDYL 8 // Y span from board origin BOY to display area boarder 
+// The board display area correspond to real life puzzle board
+// the board not displayed area is a technical area required to place pieces without spanning out of the array implementing the board
 
 // Puzzle board, only the constructor needs to be customized to change the type of puzzle board
 class Board
@@ -192,8 +197,8 @@ Board::Board(int weekday, int monthDay, int month)
     // month from 1 for January to 12 for december
     int x,y;
     next = NULL;
-    arrayOrigin.x= 3;
-    arrayOrigin.y = 3;
+    arrayOrigin.x= BOX;
+    arrayOrigin.y = BOY;
     for(x=0;x<BXL;x++){
         for(y=0;y<BYL;y++){
             boardArray[y][x] = -1;
@@ -493,7 +498,7 @@ void printError(string msg, string arg=""){
 
 void printHelp(string prog)
 {
-    cout << "Synopsis:\n\n    [weekday day month] [-h] [-i] [-s] [-t [PcsNb] [PcsNb] [PcsNb]...]\n\nDescription:\n\n    Solver for Daily Calendar Puzzle with month, day of month and day of week. Return value is 0 if at least one solution has been found or -h option is used.\n\nArguments:\n\n    weekday day month\n          Date to solve. weekday from 1=Monday to 7=Sunday, day from 1 to 31 and month from 1 to 12.\n\n    -h    Print this help\n\n    -u    Stop looking for solutions when a first one has been found\n\n    -i    Make the results appear once all of them has been found in a single line of python syntax\n\n    -s     Make the pieces be used with their smooth side up as reference side, instead their frosted side\n\n    -t    Specify which pieces can be flipped (use both sides instead reference side only)\n\n    PcsNb Number of a piece in range 1-10 added after '-t' to specify a pieces which shall be used both sides during solutions searching.\n\n          Pieces nombers are these ones:\n\n          7  7     4  4  4\n          1  7  7  7  4  2\n          1  6  6  3  4  2  2\n          1 10  6  3  3  3  2\n          1 10  6  6  9  9  9\n          8 10 10 10  9     9\n          8  8  8  8     5  5\n                      5  5  5\n\nExample\n\n    To solve Friday 23rd of January\n\n    " << prog << " 5 23 1\n" << endl;
+    cout << "Synopsis:\n\n    [weekday day month] [-h] [-u] [-i] [-s] [-t [PcsNb] [PcsNb] [PcsNb]...]\n\nDescription:\n\n    Solver for Daily Calendar Puzzle with month, day of month and day of week. Return value is 0 if at least one solution has been found or -h option is used.\n\nArguments:\n\n    weekday day month\n          Date to solve. weekday from 1=Monday to 7=Sunday, day from 1 to 31 and month from 1 to 12.\n\n    -h    Print this help\n\n    -u    Stop looking for solutions when a first one has been found\n\n    -i    Make the results appear once all of them has been found in a single line of python syntax\n\n    -s     Make the pieces be used with their smooth side up as reference side, instead their frosted side\n\n    -t    Specify which pieces can be flipped (use both sides instead reference side only)\n\n    PcsNb Number of a piece in range 1-10 added after '-t' to specify a pieces which shall be used both sides during solutions searching.\n\n          Pieces numbers are these ones:\n\n          7  7     4  4  4\n          1  7  7  7  4  2\n          1  6  6  3  4  2  2\n          1 10  6  3  3  3  2\n          1 10  6  6  9  9  9\n          8 10 10 10  9     9\n          8  8  8  8     5  5\n                      5  5  5\n\nExample\n\n    To solve Friday 23rd of January\n\n    " << prog << " 5 23 1\n" << endl;
 }
 
 
